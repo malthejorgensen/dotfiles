@@ -38,6 +38,12 @@
   {
     "comment": "",
     "type": "symlink",
+    "source": "./gitmergetool",
+    "target": "~/Library/Application Support/Sublime Text/Packages/gitmergetool"
+  },
+  {
+    "comment": "",
+    "type": "symlink",
     "source": "./NeoVintageous",
     "target": "~/Library/Application Support/Sublime Text/Packages/NeoVintageous"
   }
