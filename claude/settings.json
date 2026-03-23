@@ -27,9 +27,9 @@
       }
     ]
   },
-  "alwaysThinkingEnabled": true,
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true
-  }
+  },
+  "alwaysThinkingEnabled": true
 }
