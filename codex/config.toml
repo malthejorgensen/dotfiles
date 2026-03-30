@@ -25,4 +25,4 @@ undo = false                    # No git ghost commits
 network_access = true
 
 [tui]
-animations = false          # Don't animate text in the TUI (makes it possible to copy/paste login URL)
+animations = true          # Don't animate text in the TUI (makes it possible to copy/paste login URL)
