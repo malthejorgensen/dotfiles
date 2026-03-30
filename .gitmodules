@@ -19,3 +19,7 @@
 [submodule "Sublime Text/gitmergetool"]
 	path = Sublime Text/gitmergetool
 	url = git@github.com:malthejorgensen/subl-gitmergetool.git
+[submodule "Sublime Text/LSP-pyright"]
+	path = Sublime Text/LSP-pyright
+	url = git@github.com:malthejorgensen/LSP-pyright.git
+	branch = add-venvdir-setting
