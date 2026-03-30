@@ -52,5 +52,11 @@
     "type": "symlink",
     "source": "./LSP-pyright",
     "target": "~/Library/Application Support/Sublime Text/Packages/LSP-pyright"
+  },
+  {
+    "comment": "",
+    "type": "symlink",
+    "source": "./LSP-ty",
+    "target": "~/Library/Application Support/Sublime Text/Packages/LSP-ty"
   }
 ]

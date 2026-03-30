@@ -23,3 +23,7 @@
 	path = Sublime Text/LSP-pyright
 	url = git@github.com:malthejorgensen/LSP-pyright.git
 	branch = add-venvdir-setting
+[submodule "Sublime Text/LSP-ty"]
+	path = Sublime Text/LSP-ty
+	url = git@github.com:malthejorgensen/LSP-ty.git
+	branch = add-venvdir-setting
