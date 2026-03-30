@@ -2,7 +2,7 @@
 
 function delete_merged_branches
     # Parse arguments
-    set -l checks local prs-merged prs-closed
+    set -l checks local prs-merged
     for arg in $argv
         switch $arg
             case --local
