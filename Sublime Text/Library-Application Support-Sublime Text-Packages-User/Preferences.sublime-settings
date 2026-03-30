@@ -36,6 +36,7 @@
 		// "sublime-text-gitignore" (https://github.com/apc999/"sublime-text-gitignore")
 		//   might be okay (since works at the project level, and doesn't auto-update)
 		"SublimeLinter-flake8",
+		"Supermaven",
 		"Vintage",
 	],
 	"neovintageous_build_version": 13200,
