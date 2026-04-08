@@ -22,4 +22,8 @@
 # Codex (`git add -f .codex/config.toml` to override for a repository)
 .codex
 
+# Claude's `settings.local.json` is specifically for personal/non-shared/non-commited rules
 **/.claude/settings.local.json
+
+# Sublime Text
+*.sublime-workspace
