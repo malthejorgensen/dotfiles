@@ -468,7 +468,14 @@ fish_add_path -g "$HOME/.composer/vendor/bin"
 #source /usr/local/share/chruby/chruby.fish
 
 # OpenJDK / Java
-fish_add_path -g "/opt/homebrew/opt/openjdk/bin"
+if [ -e /opt/local/bin/port ]
+  # -- MacPorts
+  fish_add_path -g '/Library/Java/JavaVirtualMachines/jdk-25-macports.jdk/Contents/Home/bin'
+  set -Ux JAVA_HOME '/Library/Java/JavaVirtualMachines/jdk-25-macports.jdk/Contents/Home'
+else
+  # -- Homebrew
+  fish_add_path -g "/opt/homebrew/opt/openjdk/bin"
+end
 
 # # nvm
 # export NVM_DIR="$HOME/.nvm"
