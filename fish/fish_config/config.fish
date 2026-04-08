@@ -484,9 +484,10 @@ fish_add_path -g "/Applications/Docker.app/Contents/Resources/bin" # Docker Desk
 set -Ux DOCKER_DEFAULT_PLATFORM linux/arm64
 
 # rustup
-if [ -f "$HOME/.cargo/env.fish" ]
-  source "$HOME/.cargo/env.fish"
-end
+# -- can be found in `./conf.d/rustup.fish`
+
+# uv
+# -- can be found in `./conf.d/uv.env.fish`
 
 # DEPRECATED: Custom installation dir for `brew cask` (I don't do this anymore)
 # Use Homebrew Postgres v11 instead of v12 for now
