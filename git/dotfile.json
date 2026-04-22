@@ -46,5 +46,11 @@
     "type": "symlink",
     "source": "./git-unconflict",
     "target": "~/bin/git-unconflict"
+  },
+  {
+    "comment": "",
+    "type": "symlink",
+    "source": "./git-format-rebase",
+    "target": "~/bin/git-format-rebase"
   }
 ]

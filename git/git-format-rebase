@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# See:
+# https://stackoverflow.com/questions/76945493/how-do-i-format-all-commits-in-a-branch/76945494#76945494
+
+branch=$1
+cmd=$2
+
+git rebase \
+  --strategy-option=theirs \
+  --committer-date-is-author-date \
+  --exec "$cmd; git add --update; git commit --amend --no-edit" "$branch"
+
+# `--committer-date-is-author-date` isn't required, but is my preference to
+# keep author and date the same as the original.
+
+# --exec '<formatting/linting command here>; git add `git show --name-only --pretty="" HEAD` && git commit --amend --no-edit'
+
