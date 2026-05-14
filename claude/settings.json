@@ -31,5 +31,6 @@
     "enabled": true,
     "autoAllowBashIfSandboxed": true
   },
-  "alwaysThinkingEnabled": true
+  "alwaysThinkingEnabled": true,
+  "theme": "light"
 }
