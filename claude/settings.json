@@ -1,6 +1,6 @@
 {
   "env": {
-    "UV_OFFLINE": "1"
+    "UV_CACHE_DIR": "/tmp/uv_cache"
   },
   "permissions": {},
   "hooks": {
@@ -29,7 +29,18 @@
   },
   "sandbox": {
     "enabled": true,
-    "autoAllowBashIfSandboxed": true
+    "autoAllowBashIfSandboxed": true,
+    "filesystem": {
+      "allowWrite": [
+        "/tmp/uv_cache"
+      ]
+    },
+    "network": {
+        "allowedDomains": [
+          "pypi.org",
+          "files.pythonhosted.org"
+        ]
+    }
   },
   "alwaysThinkingEnabled": true,
   "theme": "light"
