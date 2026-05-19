@@ -1,6 +1,5 @@
 {
   "env": {
-    "UV_CACHE_DIR": "/tmp/uv_cache"
   },
   "permissions": {},
   "hooks": {
@@ -32,7 +31,7 @@
     "autoAllowBashIfSandboxed": true,
     "filesystem": {
       "allowWrite": [
-        "/tmp/uv_cache"
+        "~/.cache/uv"
       ]
     },
     "network": {
