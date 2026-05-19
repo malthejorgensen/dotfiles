@@ -1,0 +1,8 @@
+[
+  {
+    "comment": "",
+    "type": "symlink",
+    "source": "./config.yaml",
+    "target": "~/.config/pnpm/config.yaml"
+  }
+]

@@ -1,0 +1,7 @@
+# See https://pnpm.io/supply-chain-security for the security options below.
+#
+# Security: Don't install transitive dependencies that aren't in npm.
+# (means no transitive dependencies that are tarballs or direct git repos)
+blockExoticSubdeps: true
+# Security: Only install package versions that are at least 2 weeks old
+minimumReleaseAge: 20160
