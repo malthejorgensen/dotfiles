@@ -1,4 +1,5 @@
 /aws/cli/cache/
+/aws/credentials
 /aws/mfa-credentials-temp-*
 /aws/sso/cache/
 /karabiner/karabiner/automatic_backups/
