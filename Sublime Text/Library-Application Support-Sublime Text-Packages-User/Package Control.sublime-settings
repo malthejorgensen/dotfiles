@@ -60,4 +60,5 @@
 	// isn't set for these local branches. We don't need the git repo packages to
 	// auto-update anyways.
 	"ignore_vcs_packages": true,
+	"auto_upgrade": false, // Mini Shai-Hulud and similar too dangerous right now
 }
