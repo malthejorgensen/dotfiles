@@ -1,7 +1,8 @@
 {
   "permissions": {
     "deny": [
-      "Read(./aws/credentials)"
+      "Read(./aws/credentials)",
+      "Read(./fish/fish_config/fish_variables)"
     ]
   }
 }
