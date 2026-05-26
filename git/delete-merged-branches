@@ -121,7 +121,7 @@ function delete_merged_branches
     end
     
     # Confirm deletion
-    set branches_to_delete (printf '%s\n' $branches_to_delete | sort -u | grep -E -v '^(tmpA|tmpB|tmpC)$')
+    set branches_to_delete (printf '%s\n' $branches_to_delete | sort -u | grep -E -v '^(tmpA|tmpB|tmpC|tmpD)$' | grep -E -v '^tmp/')
     echo
     echo "The following branches will be deleted:"
     for branch in $branches_to_delete
