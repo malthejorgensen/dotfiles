@@ -87,9 +87,28 @@ end
 # We could use `path_helper`, but maybe doing it manually is faster (?)
 # See https://discussions.apple.com/thread/2187861?tstart=0
 # and https://github.com/fish-shell/fish-shell/issues/417
-set --export MANPATH (cat /etc/manpaths) $MANPATH
+function add_manpath_file
+  set -l manpath_file $argv[1]
+  if test -f "$manpath_file"
+    # echo "Reading MANPATH file \"$manpath_file\""
+    :
+  else
+    # echo "Skipping MANPATH file \"$manpath_file\" as it does not exist"
+    return 1
+  end
+  # or return 1
+
+  for f in (cat $manpath_file)
+    if test -f "$f"
+      # echo "Adding $f to MANPATH"
+      set --export MANPATH "$f" $MANPATH
+    end
+  end
+end
+
+add_manpath_file /etc/manpaths
 for f in (find /etc/manpaths.d -type f)
-  set --export MANPATH (cat $f) $MANPATH
+  add_manpath_file "$f"
 end
 
 function fishconf
