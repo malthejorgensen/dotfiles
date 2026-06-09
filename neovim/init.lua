@@ -14,6 +14,9 @@ vim.opt.smartindent = true
 vim.opt.wrap = false -- no line wrapping
 
 vim.opt.incsearch = true -- incremental search
+vim.opt.ignorecase = true -- Part 1: search case-insensitive when search string is all lowercase
+vim.opt.smartcase = true  -- Part 2: search case-insensitive when search string is all lowercase
+-- both options above are needed
 
 vim.opt.termguicolors = true
 
