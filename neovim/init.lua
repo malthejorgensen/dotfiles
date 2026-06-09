@@ -2,8 +2,8 @@
 -- vim.opt.clipboard = 'unnamedplus' -- use system clipboard for yank
 vim.opt.clipboard = '' -- Don't use system clipboard for yank! (usually I don't want to overwrite clipboard on yank)
 
-vim.opt.nu = true                 -- set line numbers -- set line numbers
--- vim.opt.relativenumber = true     -- use relative line numbers
+vim.opt.nu = true                 -- set line numbers
+-- vim.opt.relativenumber = true  -- use relative line numbers
 
 -- set tab size to 2 spaces
 vim.opt.tabstop = 2
