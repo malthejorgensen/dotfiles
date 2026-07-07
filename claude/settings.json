@@ -31,16 +31,16 @@
   "sandbox": {
     "enabled": true,
     "autoAllowBashIfSandboxed": true,
+    "network": {
+      "allowedDomains": [
+        "pypi.org",
+        "files.pythonhosted.org"
+      ]
+    },
     "filesystem": {
       "allowWrite": [
         "~/.cache/uv"
       ]
-    },
-    "network": {
-        "allowedDomains": [
-          "pypi.org",
-          "files.pythonhosted.org"
-        ]
     }
   },
   "alwaysThinkingEnabled": true,
