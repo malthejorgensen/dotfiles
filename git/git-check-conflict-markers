@@ -2,8 +2,9 @@
 # git-check-conflict-markers
 #
 # Checks the commits on a branch (by default the current branch, compared
-# against main/master/the repo's default branch/upstream) for added lines
-# that contain leftover conflict markers (<<<<<<<, =======, >>>>>>>).
+# against the repo's default branch) for added lines that contain leftover
+# conflict markers (<<<<<<<, =======, >>>>>>>). The commits to check are
+# determined by git-list-branch-commits.
 #
 # For every offending commit, prints its oneline (`<hash> <subject>`).
 #
@@ -17,60 +18,26 @@ set -euo pipefail
 branch="${1:-HEAD}"
 base_branch="${2:-}"
 
-find_default_branch() {
-    local ref
-
-    for remote in origin upstream; do
-        ref=$(git symbolic-ref -q "refs/remotes/$remote/HEAD" 2>/dev/null || true)
-        if [ -n "$ref" ]; then
-            echo "${ref#refs/remotes/$remote/}"
-            return 0
-        fi
-    done
-
-    for remote in origin upstream; do
-        for name in main master; do
-            if git show-ref --verify --quiet "refs/remotes/$remote/$name"; then
-                echo "$remote/$name"
-                return 0
-            fi
-        done
-    done
-
-    for name in main master; do
-        if git show-ref --verify --quiet "refs/heads/$name"; then
-            echo "$name"
-            return 0
-        fi
-    done
-
-    return 1
-}
-
-if [ -z "$base_branch" ]; then
-    if ! base_branch=$(find_default_branch); then
-        echo "Error: Could not determine default/main/master/upstream branch. Pass it explicitly:" >&2
-        echo "  $(basename "$0") [branch] <base-branch>" >&2
-        exit 1
-    fi
-fi
-
-echo "Comparing '$branch' against base branch '$base_branch'" >&2
-
-commits=$(git rev-list "$base_branch..$branch")
-
-if [ -z "$commits" ]; then
-    echo "No commits found on '$branch' that aren't on '$base_branch'." >&2
-    exit 0
+if [ -n "$base_branch" ]; then
+    commits=$(git list-branch-commits "$branch" "$base_branch" --raw)
+else
+    commits=$(git list-branch-commits "$branch" --raw)
 fi
 
 found=0
 for commit in $commits; do
-    # Only look at added lines (`+...`), ignore the `+++ b/file` diff header,
-    # and match conflict markers (7 repeated chars, optionally with a label).
+    # Only look at added lines (`+...`, one or more `+` to also catch merge
+    # commits' combined-diff format), ignore the `+++ b/file` diff header,
+    # allow leading whitespace (indented markers), and allow trailing
+    # whitespace/CR before end-of-line (CRLF files) after the bare `=======`.
+    # Use plain `grep` redirected to /dev/null rather than `grep -q`: with
+    # `set -o pipefail`, `grep -q` exits at the first match and the upstream
+    # `grep -v` then dies with SIGPIPE (141), making the whole pipeline
+    # non-zero and the `if` wrongly conclude "no match". Plain grep reads to
+    # EOF, so no stage is killed and the exit status is accurate.
     if git show --unified=0 --pretty=format: "$commit" \
         | grep -v '^+++' \
-        | grep -qE '^\+(<{7}( |$)|={7}$|>{7}( |$))'; then
+        | grep -E '^\+{1,}[[:space:]]*(<{7}([[:space:]]|$)|={7}[[:space:]]*$|>{7}([[:space:]]|$))' >/dev/null; then
         git log -1 --oneline "$commit"
         found=1
     fi
