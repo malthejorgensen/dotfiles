@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# git-check-conflict-markers
+#
+# Checks the commits on a branch (by default the current branch, compared
+# against main/master/the repo's default branch/upstream) for added lines
+# that contain leftover conflict markers (<<<<<<<, =======, >>>>>>>).
+#
+# For every offending commit, prints its oneline (`<hash> <subject>`).
+#
+# Usage:
+#   git-check-conflict-markers [branch] [base-branch]
+#
+# Exit status: 0 if no commits contain conflict markers, 1 if one or more do.
+
+set -euo pipefail
+
+branch="${1:-HEAD}"
+base_branch="${2:-}"
+
+find_default_branch() {
+    local ref
+
+    for remote in origin upstream; do
+        ref=$(git symbolic-ref -q "refs/remotes/$remote/HEAD" 2>/dev/null || true)
+        if [ -n "$ref" ]; then
+            echo "${ref#refs/remotes/$remote/}"
+            return 0
+        fi
+    done
+
+    for remote in origin upstream; do
+        for name in main master; do
+            if git show-ref --verify --quiet "refs/remotes/$remote/$name"; then
+                echo "$remote/$name"
+                return 0
+            fi
+        done
+    done
+
+    for name in main master; do
+        if git show-ref --verify --quiet "refs/heads/$name"; then
+            echo "$name"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+if [ -z "$base_branch" ]; then
+    if ! base_branch=$(find_default_branch); then
+        echo "Error: Could not determine default/main/master/upstream branch. Pass it explicitly:" >&2
+        echo "  $(basename "$0") [branch] <base-branch>" >&2
+        exit 1
+    fi
+fi
+
+echo "Comparing '$branch' against base branch '$base_branch'" >&2
+
+commits=$(git rev-list "$base_branch..$branch")
+
+if [ -z "$commits" ]; then
+    echo "No commits found on '$branch' that aren't on '$base_branch'." >&2
+    exit 0
+fi
+
+found=0
+for commit in $commits; do
+    # Only look at added lines (`+...`), ignore the `+++ b/file` diff header,
+    # and match conflict markers (7 repeated chars, optionally with a label).
+    if git show --unified=0 --pretty=format: "$commit" \
+        | grep -v '^+++' \
+        | grep -qE '^\+(<{7}( |$)|={7}$|>{7}( |$))'; then
+        git log -1 --oneline "$commit"
+        found=1
+    fi
+done
+
+exit "$found"

@@ -52,5 +52,11 @@
     "type": "symlink",
     "source": "./git-format-rebase",
     "target": "~/bin/git-format-rebase"
+  },
+  {
+    "comment": "",
+    "type": "symlink",
+    "source": "./git-check-conflict-markers",
+    "target": "~/bin/git-check-conflict-markers"
   }
 ]
