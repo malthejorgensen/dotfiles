@@ -1,7 +1,8 @@
 {
-  "env": {
+  "env": {},
+  "permissions": {
+    "defaultMode": "acceptEdits"
   },
-  "permissions": {},
   "hooks": {
     "Stop": [
       {
