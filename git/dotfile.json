@@ -58,5 +58,11 @@
     "type": "symlink",
     "source": "./git-check-conflict-markers",
     "target": "~/bin/git-check-conflict-markers"
+  },
+  {
+    "comment": "",
+    "type": "symlink",
+    "source": "./git-list-branch-commits",
+    "target": "~/bin/git-list-branch-commits"
   }
 ]

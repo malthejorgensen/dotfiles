@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# git-list-branch-commits
+#
+# Lists the commits on a branch (by default the current branch) that
+# aren't on the repo's default branch yet. The default branch's *name* is
+# taken from origin's (or upstream's) HEAD, falling back to "main"/"master".
+# Commits are then excluded using every ref with that name -- local and
+# across all remotes -- so the list is accurate even if the current branch
+# hasn't been rebased onto the latest upstream (e.g. a stale local "main"
+# won't make already-upstream commits look new).
+#
+# Usage:
+#   git-list-branch-commits [branch] [base-branch] [--raw]
+#
+# By default prints one "<hash> <subject>" line per commit (newest first).
+# With --raw, prints just the full commit hash, one per line -- meant for
+# other scripts to consume (see git-check-conflict-markers).
+
+set -euo pipefail
+
+raw=0
+args=()
+for arg in "$@"; do
+    case "$arg" in
+        --raw) raw=1 ;;
+        *) args+=("$arg") ;;
+    esac
+done
+
+branch="${args[0]:-HEAD}"
+base_branch="${args[1]:-}"
+
+default_branch_name() {
+    local ref name
+
+    for remote in origin upstream; do
+        ref=$(git symbolic-ref -q "refs/remotes/$remote/HEAD" 2>/dev/null || true)
+        if [ -n "$ref" ]; then
+            basename "$ref"
+            return 0
+        fi
+    done
+
+    for name in main master; do
+        if git show-ref --verify --quiet "refs/heads/$name" \
+            || git show-ref --verify --quiet "refs/remotes/origin/$name" \
+            || git show-ref --verify --quiet "refs/remotes/upstream/$name"; then
+            echo "$name"
+            return 0
+        fi
+    done
+
+    return 1
+}
+
+if [ -n "$base_branch" ]; then
+    echo "Comparing '$branch' against base branch '$base_branch'" >&2
+    commits=$(git rev-list "$base_branch..$branch")
+else
+    name=$(default_branch_name) || {
+        echo "Error: Could not determine default/main/master branch. Pass one explicitly:" >&2
+        echo "  $(basename "$0") [branch] <base-branch>" >&2
+        exit 1
+    }
+
+    # Exclude commits reachable from ANY local or remote-tracking ref named
+    # "$name" (not just one), so an un-rebased/stale local branch doesn't
+    # make already-upstream commits look new.
+    exclude_refs=$(git for-each-ref --format='^%(refname)' \
+        "refs/heads/$name" "refs/remotes/*/$name")
+
+    echo "Comparing '$branch' against every '$name' ref found (local + remotes):" >&2
+    echo "$exclude_refs" | sed 's/^/  /' >&2
+
+    # shellcheck disable=SC2086
+    commits=$(git rev-list "$branch" $exclude_refs)
+fi
+
+if [ -z "$commits" ]; then
+    echo "No commits found on '$branch' that aren't upstream." >&2
+    exit 0
+fi
+
+if [ "$raw" -eq 1 ]; then
+    echo "$commits"
+else
+    while IFS= read -r commit; do
+        git log -1 --format='%h %s' "$commit"
+    done <<< "$commits"
+fi
