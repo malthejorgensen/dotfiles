@@ -27,3 +27,5 @@
 
 # Sublime Text
 *.sublime-workspace
+
+**/.claude/.cc-writes/
