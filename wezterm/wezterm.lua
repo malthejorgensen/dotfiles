@@ -64,4 +64,64 @@ config.keys = {
   },
 }
 
+-- Keep text selection in WezTerm even when tmux has enabled mouse reporting.
+-- This lets tmux handle the scroll wheel while Cmd + C can still copy the
+-- selection, without copying it automatically when the mouse is released.
+config.mouse_bindings = {
+  {
+    event = { Down = { streak = 1, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.SelectTextAtMouseCursor 'Cell',
+  },
+  {
+    event = { Drag = { streak = 1, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.ExtendSelectionToMouseCursor 'Cell',
+  },
+  {
+    event = { Up = { streak = 1, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.CompleteSelectionOrOpenLinkAtMouseCursor 'PrimarySelection',
+  },
+  {
+    event = { Down = { streak = 2, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.SelectTextAtMouseCursor 'Word',
+  },
+  {
+    event = { Drag = { streak = 2, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.ExtendSelectionToMouseCursor 'Word',
+  },
+  {
+    event = { Up = { streak = 2, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.CompleteSelection 'PrimarySelection',
+  },
+  {
+    event = { Down = { streak = 3, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.SelectTextAtMouseCursor 'Line',
+  },
+  {
+    event = { Drag = { streak = 3, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.ExtendSelectionToMouseCursor 'Line',
+  },
+  {
+    event = { Up = { streak = 3, button = 'Left' } },
+    mods = 'NONE',
+    mouse_reporting = true,
+    action = wezterm.action.CompleteSelection 'PrimarySelection',
+  },
+}
+
 return config
