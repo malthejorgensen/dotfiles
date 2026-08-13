@@ -16,6 +16,41 @@ else
   config.color_scheme = 'Selenized Light (Gogh)'
 end
 
+-- Keep closing delimiters around a URL out of the clickable link. WezTerm's
+-- default bare-URL rule permits `)` as the final character, which makes links
+-- in Markdown and prose such as `[label](https://example.com)` open the wrong
+-- address.
+config.hyperlink_rules = {
+  {
+    regex = [[\((\w+://\S+)\)]],
+    format = '$1',
+    highlight = 1,
+  },
+  {
+    regex = [[\[(\w+://\S+)\]]],
+    format = '$1',
+    highlight = 1,
+  },
+  {
+    regex = [[\{(\w+://\S+)\}]],
+    format = '$1',
+    highlight = 1,
+  },
+  {
+    regex = [[<(\w+://\S+)>]],
+    format = '$1',
+    highlight = 1,
+  },
+  {
+    regex = [[\b\w+://\S+[/a-zA-Z0-9-]+]],
+    format = '$0',
+  },
+  {
+    regex = [[\b\w+@[\w-]+(\.[\w-]+)+\b]],
+    format = 'mailto:$0',
+  },
+}
+
 -- Table mapping keypresses to actions
 config.keys = {
   -- Sends ESC + b and ESC + f sequence, which is used
