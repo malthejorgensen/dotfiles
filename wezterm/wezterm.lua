@@ -27,7 +27,7 @@ config.hyperlink_rules = {
     highlight = 1,
   },
   {
-    regex = [[\[(\w+://\S+)\]]],
+    regex = [=[\[(\w+://\S+)\]]=],
     format = '$1',
     highlight = 1,
   },
@@ -81,12 +81,12 @@ config.keys = {
   {
     key = 'LeftArrow',
     mods = 'SHIFT',
-    action = wezterm.action.MoveTabRelative(-1)
+    action = wezterm.action.MoveTabRelative(-1),
   },
   {
     key = 'RightArrow',
     mods = 'SHIFT',
-    action = wezterm.action.MoveTabRelative(1)
+    action = wezterm.action.MoveTabRelative(1),
   },
   {
     key = 'Enter',
@@ -94,7 +94,7 @@ config.keys = {
     -- Claude Code needs Alt + Enter for newlines, but Wezterm's default is to
     -- "full screen" the window on that keypress
     -- Default: action = wezterm.action.ToggleFullScreen
-    action = wezterm.action.DisableDefaultAssignment
+    action = wezterm.action.DisableDefaultAssignment,
     -- action = wezterm.action.Disable
   },
 }
