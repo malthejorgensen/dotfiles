@@ -205,7 +205,33 @@ alias git-safe-pull git-rebase-origin
 alias gpr git-safe-pull
 alias git-merge-cleanup 'find -E . -regex \'.*_(BACKUP|BASE|LOCAL|REMOTE)_[0-9]{4}\.[^\.]+\' -print0 | xargs -0 rm'
 alias gds "git diff --stat"
-alias gdo "git diff origin/(gb)"
+# alias gdo "git diff origin/(gb)"
+function gdo
+  set --local current_branch (git symbolic-ref --quiet --short HEAD)
+  or begin
+    echo 'gdo: current HEAD is not a branch.' >&2
+    return 1
+  end
+
+  set --local upstream "origin/$current_branch"
+  if not git rev-parse --verify --quiet "$upstream^{commit}" >/dev/null
+    echo "gdo: upstream '$upstream' was not found." >&2
+    return 1
+  end
+
+  set --local merge_base (git merge-base "$upstream" HEAD)
+  or return 1
+
+  # Use the union of files touched by commits unique to this branch. Disable
+  # rename detection here so both sides of a rename remain eligible paths.
+  set --local branch_files (git diff --name-only --no-renames -z "$merge_base" HEAD | string split0)
+  if test (count $branch_files) -eq 0
+    return 0
+  end
+
+  # Keep the existing comparison target while limiting it to branch files.
+  git diff $argv "$upstream" -- $branch_files
+end
 alias gfo 'git fetch origin'
 alias gcp 'git cherry-pick'
 alias glo "git log origin/(gb) --pretty=oneline"
