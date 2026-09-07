@@ -227,7 +227,7 @@ alias tsl 'tig stash --grep="on "(gb)'
 #
 #     alias glo 'git log FETCH_HEAD' # git log origin/<branch>
 #     alias gdo 'git diff FETCH_HEAD' # diff current branch with origin
-function git-recent-branches
+function git-recent-branches-simple
       git reflog | \
       egrep -io "moving from ([^[:space:]]+)" | \
       awk '{ print $3 }' | \
@@ -238,11 +238,85 @@ function git-recent-branches
       # Only get 20 latest
       head -n20
 end
+function git-recent-branches
+  argparse 'A/all' -- $argv
+  or return
+
+  # Keep the timestamp of the latest checkout of each branch. In -A mode,
+  # also include each local branch's tip commit, and collect HEAD reflogs from
+  # every linked worktree. The final sort is ascending because fzf starts at
+  # the bottom.
+  set --local reflog_entries
+  set --local branch_entries
+  if set -q _flag_A
+    set branch_entries (git for-each-ref \
+      --format='__branch__ %(committerdate:unix) %(refname:lstrip=2)' \
+      refs/heads | awk '{ print $1 "\t" $2 "\t" $3 }')
+    set reflog_entries (git worktree list --porcelain | \
+      awk '/^worktree / { sub(/^worktree /, ""); print }' | \
+      while read --local worktree
+        git -C "$worktree" reflog --date=unix --format='%gd%x09%gs' 2>/dev/null
+      end)
+  else
+    set reflog_entries (git reflog --date=unix --format='%gd%x09%gs')
+  end
+
+  set --local recent_candidates (printf '%s\n' $branch_entries $reflog_entries | awk -F '\t' '
+    $1 == "__branch__" {
+      timestamp = $2
+      branch = $3
+      latest_timestamp[branch] = timestamp
+      latest_sequence[branch] = 0
+      next
+    }
+    $2 !~ /^checkout: moving from / { next }
+    {
+      sequence++
+      timestamp = $1
+      sub(/^.*\{/, "", timestamp)
+      sub(/\}$/, "", timestamp)
+      branch = $2
+      sub(/^checkout: moving from /, "", branch)
+      sub(/ to .*/, "", branch)
+      if (branch !~ /^[a-f0-9]{40}$/ &&
+          (!(branch in latest_timestamp) ||
+           timestamp > latest_timestamp[branch] ||
+           (timestamp == latest_timestamp[branch] &&
+            (latest_sequence[branch] == 0 || sequence < latest_sequence[branch])))) {
+        latest_timestamp[branch] = timestamp
+        latest_sequence[branch] = sequence
+      }
+    }
+    END {
+      for (branch in latest_timestamp) {
+        print latest_timestamp[branch] "\t" latest_sequence[branch] "\t" branch
+      }
+    }
+  ' | sort -n -k1,1 -k2,2r -k3,3 | awk -F '\t' '{ print $3 }')
+
+  # Filter out branches that have since been deleted.
+  set --local alive_branches (git for-each-ref --format='%(refname:lstrip=2)' refs/heads)
+  set --local recent_branches
+  for branch in $recent_candidates
+    if contains -- "$branch" $alive_branches
+      set --append recent_branches "$branch"
+    end
+  end
+
+  # Only get the 20 latest, while keeping the newest one at the bottom.
+  set --local first_branch 1
+  if test (count $recent_branches) -gt 20
+    set first_branch (math (count $recent_branches) - 19)
+  end
+  for branch in $recent_branches[$first_branch..-1]
+    echo $branch
+  end
+end
 function grp
-  git-recent-branches | fzf
+  git-recent-branches $argv | fzf
 end
 function gr
-  git checkout (grp)
+  git checkout (grp $argv)
 end
 function gdr
   set --local __branch_to_delete (grp)
