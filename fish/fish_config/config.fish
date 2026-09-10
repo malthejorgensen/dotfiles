@@ -318,7 +318,7 @@ function git-recent-branches
         print latest_timestamp[branch] "\t" latest_sequence[branch] "\t" branch
       }
     }
-  ' | sort -n -k1,1 -k2,2r -k3,3 | awk -F '\t' '{ print $3 }')
+  ' | sort -n -k1,1 -k2,2r -k3,3 -r | awk -F '\t' '{ print $3 }')
 
   # Filter out branches that have since been deleted.
   set --local alive_branches (git for-each-ref --format='%(refname:lstrip=2)' refs/heads)
