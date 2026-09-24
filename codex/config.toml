@@ -1,10 +1,13 @@
-notify = ["python3", "/Users/malthejorgensen/.codex/notifier.py"]
-model = "gpt-5.2-codex"
-
 # See:
 # - https://developers.openai.com/codex/config-basic/
 # - https://developers.openai.com/codex/security
 # - https://github.com/openai/codex/blob/main/docs/config.md
+model = "gpt-6-sol"
+model_reasoning_effort = "medium"
+
+plan_mode_reasoning_effort = "xhigh"
+service_tier = "default"
+approvals_reviewer = "auto_review"
 
 # The two options below are equivalent to executing as `codex --full-auto`
 #
@@ -15,9 +18,11 @@ approval_policy = "on-request" # Other options: "untrusted", "never"
 # Allow the model to request web searches
 web_search = "cached"
 
+notify = ["python3", "/Users/malthejorgensen/.codex/notifier.py"]
+
 [features]
-shell_snapshot = true           # Speed up repeated commands
-undo = false                    # No git ghost commits
+shell_snapshot = true       # Speed up repeated commands
+undo = false                # No git ghost commits
 
 [sandbox_workspace_write]
 # Fixes `uv` when running in sandbox (system-configuration / dynamic_store.rs)
@@ -25,4 +30,31 @@ undo = false                    # No git ghost commits
 network_access = true
 
 [tui]
-animations = true          # Don't animate text in the TUI (makes it possible to copy/paste login URL)
+animations = true            # Don't animate text in the TUI (makes it possible to copy/paste login URL)
+whimsy = false               # Remove Astra dots fading in and out (https://github.com/openai/codex/issues/44561)
+
+[mcp_servers.railway]
+command = "railway"
+args = ["mcp"]
+
+[mcp_servers.railway.tools.list_projects]
+approval_mode = "approve"
+
+[mcp_servers.railway.tools.list_services]
+approval_mode = "approve"
+
+[mcp_servers.computer-use]
+command = "./Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient"
+args = ["mcp"]
+cwd = "."
+enabled = false
+
+[mcp_servers.openaiDeveloperDocs]
+url = "https://developers.openai.com/mcp"
+
+[mcp_servers.sentry]
+url = "https://mcp.sentry.dev/mcp/agentwork"
+
+[mcp_servers.sentry.tools.execute_sentry_tool]
+approval_mode = "approve"
+
