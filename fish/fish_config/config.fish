@@ -206,6 +206,36 @@ alias gpr git-safe-pull
 alias git-merge-cleanup 'find -E . -regex \'.*_(BACKUP|BASE|LOCAL|REMOTE)_[0-9]{4}\.[^\.]+\' -print0 | xargs -0 rm'
 alias gds "git diff --stat"
 # alias gdo "git diff origin/(gb)"
+
+function git-branch-changed-files
+  set --function current_branch "$argv[1]"
+  set --function upstream "$argv[2]"
+  set --function merge_base "$argv[3]"
+
+  if test -z "$current_branch"
+    set --function current_branch (git symbolic-ref --quiet --short HEAD)
+    or begin
+      echo 'git-branch-changed-files: current HEAD is not a branch.' >&2
+      return 1
+    end
+  end
+
+  if test -z "$upstream"
+    set --function upstream "origin/$current_branch"
+    if not git rev-parse --verify --quiet "$upstream^{commit}" >/dev/null
+      echo "git-branch-changed-files: Upstream '$upstream' was not found." >&2
+      return 1
+    end
+  end
+
+  if test -z "$merge_base"
+    set --function merge_base (git merge-base "$upstream" HEAD)
+    or echo 'git-branch-changed-files: Could not find `git merge-base`' >&2; return
+  end
+
+  git diff --name-only --no-renames -z "$merge_base" HEAD | string split0
+end
+
 function gdo
   set --local current_branch (git symbolic-ref --quiet --short HEAD)
   or begin
@@ -224,7 +254,7 @@ function gdo
 
   # Use the union of files touched by commits unique to this branch. Disable
   # rename detection here so both sides of a rename remain eligible paths.
-  set --local branch_files (git diff --name-only --no-renames -z "$merge_base" HEAD | string split0)
+  set --local branch_files (git-branch-changed-files $current_branch $upstream $merge_base)
   if test (count $branch_files) -eq 0
     return 0
   end
