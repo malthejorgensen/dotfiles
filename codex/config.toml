@@ -18,8 +18,6 @@ approval_policy = "on-request" # Other options: "untrusted", "never"
 # Allow the model to request web searches
 web_search = "cached"
 
-notify = ["python3", "/Users/malthejorgensen/.codex/notifier.py"]
-
 [features]
 shell_snapshot = true       # Speed up repeated commands
 undo = false                # No git ghost commits
@@ -32,6 +30,12 @@ network_access = true
 [tui]
 animations = true            # Don't animate text in the TUI (makes it possible to copy/paste login URL)
 whimsy = false               # Remove Astra dots fading in and out (https://github.com/openai/codex/issues/44561)
+
+[[hooks.Stop]]
+
+[[hooks.Stop.hooks]]
+type = "command"
+command = "python3 /Users/malthejorgensen/.codex/notifier.py"
 
 [mcp_servers.railway]
 command = "railway"
@@ -57,4 +61,3 @@ url = "https://mcp.sentry.dev/mcp/agentwork"
 
 [mcp_servers.sentry.tools.execute_sentry_tool]
 approval_mode = "approve"
-
