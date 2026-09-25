@@ -228,13 +228,18 @@ function git-branch-changed-files
     end
   end
 
-  if test -z "$merge_base"
-    set --function merge_base (git merge-base "$upstream" HEAD)
-    if test -z "$merge_base"
-      echo 'git-branch-changed-files: Could not find `git merge-base`' >&2
-      return 1
-    end
-  end
+  # The true `git merge-base` will often be an older commit on `main` this
+  # means we pick up changes that happened on `main` and not on this branch.
+  # Instead we just assume set $merge_base to always be `main`.
+  set --function merge_base 'main'
+  #
+  # if test -z "$merge_base"
+  #   set --function merge_base (git merge-base "$upstream" HEAD)
+  #   if test -z "$merge_base"
+  #     echo 'git-branch-changed-files: Could not find `git merge-base`' >&2
+  #     return 1
+  #   end
+  # end
 
   git diff --name-only --no-renames -z "$merge_base" HEAD | string split0
 end
