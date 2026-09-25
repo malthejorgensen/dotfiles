@@ -208,40 +208,30 @@ alias gds "git diff --stat"
 # alias gdo "git diff origin/(gb)"
 
 function git-branch-changed-files
-  set --function current_branch "$argv[1]"
-  set --function upstream "$argv[2]"
-  set --function merge_base "$argv[3]"
+  set --function branch "$argv[1]"
+  set --function base_branch "$argv[2]"
 
-  if test -z "$current_branch"
-    set --function current_branch (git symbolic-ref --quiet --short HEAD)
+  if test -z "$branch"
+    set --function branch (git symbolic-ref --quiet --short HEAD)
     or begin
       echo 'git-branch-changed-files: current HEAD is not a branch.' >&2
       return 1
     end
   end
 
-  if test -z "$upstream"
-    set --function upstream "origin/$current_branch"
-    if not git rev-parse --verify --quiet "$upstream^{commit}" >/dev/null
-      echo "git-branch-changed-files: Upstream '$upstream' was not found." >&2
+  if test -z "$base_branch"
+    set --function base_branch 'main'
+  end
+
+  if test -z "$merge_base"
+    set --function merge_base (git merge-base "$base_branch" "$branch")
+    if test -z "$merge_base"
+      echo 'git-branch-changed-files: Could not find `git merge-base`' >&2
       return 1
     end
   end
 
-  # The true `git merge-base` will often be an older commit on `main` this
-  # means we pick up changes that happened on `main` and not on this branch.
-  # Instead we just assume set $merge_base to always be `main`.
-  set --function merge_base 'main'
-  #
-  # if test -z "$merge_base"
-  #   set --function merge_base (git merge-base "$upstream" HEAD)
-  #   if test -z "$merge_base"
-  #     echo 'git-branch-changed-files: Could not find `git merge-base`' >&2
-  #     return 1
-  #   end
-  # end
-
-  git diff --name-only --no-renames -z "$merge_base" HEAD | string split0
+  git diff --name-only --no-renames -z "$merge_base" "$branch" | string split0
 end
 
 function gdo
@@ -257,12 +247,19 @@ function gdo
     return 1
   end
 
-  set --local merge_base (git merge-base "$upstream" HEAD)
-  or return 1
+  # Files changed on the local branch since the merge base.
+  set --local local_branch_files (git-branch-changed-files $current_branch)
 
-  # Use the union of files touched by commits unique to this branch. Disable
-  # rename detection here so both sides of a rename remain eligible paths.
-  set --local branch_files (git-branch-changed-files $current_branch $upstream $merge_base)
+  # Files changed on the upstream branch since the merge base.
+  set --local upstream_branch_files (git-branch-changed-files $upstream)
+
+  set --local branch_files
+  for file in $local_branch_files $upstream_branch_files
+    if not contains -- $file $branch_files
+      set --append branch_files $file
+    end
+  end
+
   if test (count $branch_files) -eq 0
     return 0
   end
