@@ -1,5 +1,10 @@
 function postitionQuakeTerminal(window, screenSize)
     local windowSize = hs.geometry.size(800,400)
+    -- More comfortable size on larger screens
+    if screenSize.w >= 2000 then
+        windowSize = hs.geometry.size(900,450)
+    end
+
     local fromLeft = (screenSize.w / 2) - (windowSize.w / 2)
     -- Position and size window
     window:setTopLeft(hs.geometry.point(fromLeft,0))
