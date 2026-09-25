@@ -230,7 +230,10 @@ function git-branch-changed-files
 
   if test -z "$merge_base"
     set --function merge_base (git merge-base "$upstream" HEAD)
-    or echo 'git-branch-changed-files: Could not find `git merge-base`' >&2; return
+    if test -z "$merge_base"
+      echo 'git-branch-changed-files: Could not find `git merge-base`' >&2
+      return 1
+    end
   end
 
   git diff --name-only --no-renames -z "$merge_base" HEAD | string split0
