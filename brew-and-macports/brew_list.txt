@@ -18,6 +18,9 @@ fzf
 ripgrep
 sd
 
+# `vidir`, `sponge`, `parallel` -- sponge is dangerous, and just generally these aren't that important.
+# moreutils
+
 # macOS CLI
 reattach-to-user-namespace
 
