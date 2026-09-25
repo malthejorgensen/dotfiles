@@ -21,6 +21,16 @@ vim.opt.smartcase = true  -- Part 2: search case-insensitive when search string 
 
 vim.opt.termguicolors = true
 
+-- Reopen files at the last line visited.
+vim.api.nvim_create_autocmd("BufReadPost", {
+  callback = function()
+    local line = vim.api.nvim_buf_get_mark(0, '"')[1]
+    if line > 0 and line <= vim.api.nvim_buf_line_count(0) then
+      vim.api.nvim_win_set_cursor(0, { line, 0 })
+    end
+  end,
+})
+
 -- FROM: https://medium.com/unixification/must-have-neovim-keymaps-51c283394070
 function Map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
