@@ -32,14 +32,29 @@ hs.hotkey.bind({"ctrl"}, "§", function()
     -- the `else`-branch. But that produces a lot of flashing of the terminal window, whereas this
     -- structure of the code does not.
     local screens = hs.screen.allScreens()
+    -- print(string.format("Number of screens: %d", #screens))
     if #screens > 1 then
-        local currentScreen = window:screen()
-        local targetScreen = screens[2]
+        local targetScreenSize = nil
 
+        -- Find the largest screen
+        maxWidth = 0
+        for key, screen in pairs(screens) do
+            local screenSize = screen:frame()
+            -- print(hs.inspect(screen))
+            -- print(hs.inspect(screenSize))
+            if screenSize.w > maxWidth then
+                maxWidth = screenSize.w
+                targetScreen = screen
+                targetScreenSize = screenSize
+            end
+        end
+
+        -- Move it to the largest screen
         if currentScreen ~= targetScreen then
-            postitionQuakeTerminal(window)
+            postitionQuakeTerminal(window, targetScreenSize)
             window:moveToScreen(targetScreen, false, true, 0)
         end
+        -- postitionQuakeTerminal(window)
     else
         local currentScreen = window:screen()
         local targetScreen = screens[2]
