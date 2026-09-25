@@ -260,6 +260,10 @@ sudo systemsetup -settimezone "Europe/Copenhagen" > /dev/null
 defaults write com.apple.screensaver askForPassword -int 1
 defaults write com.apple.screensaver askForPasswordDelay -int 0
 
+# Start screensaver (lock screen as according to above) after 5 minutes
+# defaults -currentHost write com.apple.screensaver idleTime 300
+# defaults write com.apple.screensaver idleTime 300
+
 # Save screenshots to Downloads
 defaults write com.apple.screencapture location -string "${HOME}/Downloads"
 
