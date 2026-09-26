@@ -896,7 +896,6 @@ defaults write com.apple.messageshelper.MessageController SOInputLineSettings -d
 ###############################################################################
 # Kill affected applications                                                  #
 ###############################################################################
-
 for app in "Activity Monitor" \
   "Address Book" \
   "Calendar" \
@@ -915,4 +914,8 @@ for app in "Activity Monitor" \
   "iCal"; do
   killall "${app}" &> /dev/null
 done
+
+# Trigger trackpad changes (unclear if this works)
+/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u
+
 echo "Done. Note that some of these changes require a logout/restart to take effect."
