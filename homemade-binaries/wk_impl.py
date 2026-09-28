@@ -76,6 +76,15 @@ def main():
 
     repo_root = Path(result.stdout.strip())
 
+    claude_src = None
+    if args.claude:
+        claude_dir = Path.home() / ".claude" / "projects"
+        cwd = Path.cwd()
+        claude_src = claude_dir / cwd.as_posix().replace("/", "-")
+        if not claude_src.is_dir():
+            print(f"error: no Claude project found at {claude_src}", file=sys.stderr)
+            sys.exit(1)
+
     # Generate 6-char random lowercase alphanumeric name
     chars = string.ascii_lowercase + string.digits
     name = "".join(random.choices(chars, k=6))
@@ -105,23 +114,17 @@ def main():
         )
     subprocess.run(cmd, check=True, stdout=sys.stderr)
 
-    if args.claude:
-        claude_dir = Path.home() / ".claude" / "projects"
-        cwd = Path.cwd()
-        src = claude_dir / cwd.as_posix().replace("/", "-")
+    if claude_src:
         dst = claude_dir / worktree_path.as_posix().replace("/", "-")
-        if src.exists():
-            shutil.copytree(src, dst)
-            # Replace
-            for f in dst.rglob("*"):
-                if not f.is_file():
-                    continue
-                text = f.read_text(errors="replace")
-                updated = text.replace(f'"path": "{cwd}/', f'"path": "{worktree_path}/')
-                if updated != text:
-                    f.write_text(updated)
-        else:
-            print(f"warning: no Claude project found at {src}", file=sys.stderr)
+        shutil.copytree(claude_src, dst)
+        # Replace
+        for f in dst.rglob("*"):
+            if not f.is_file():
+                continue
+            text = f.read_text(errors="replace")
+            updated = text.replace(f'"path": "{cwd}/', f'"path": "{worktree_path}/')
+            if updated != text:
+                f.write_text(updated)
 
     print(worktree_path)
 
