@@ -26,7 +26,7 @@
   {
     "comment": "`git worktree` helper",
     "type": "symlink",
-    "source": "./wk_impl",
+    "source": "./wk_impl.py",
     "target": "~/bin/wk_impl"
   }
 ]
