@@ -51,11 +51,18 @@ def main():
     parser = ArgumentParser(
         prog="wk", description="Create and delete Git worktrees with ease"
     )
-    parser.add_argument("branch", nargs="?")
-    parser.add_argument("--claude", action="store_true")
+    parser.add_argument(
+        "branch",
+        nargs="?",
+        help="git branch to check out (will be created if it doesn't exist)",
+    )
+    parser.add_argument("--delete", action="store_true", help="Delete worktree")
+    parser.add_argument(
+        "--claude", action="store_true", help="Create worktree in ~/.claude/projects"
+    )
     args = parser.parse_args()
 
-    if args.branch == "delete":
+    if args.branch == "delete" or args.delete:
         cmd_delete()
         return
 
