@@ -3,6 +3,7 @@
 # requires-python = ">=3.9"
 # dependencies = []
 # ///
+import argparse
 import random
 import shutil
 import string
@@ -38,9 +39,12 @@ def cmd_delete():
 
 
 def main():
-    args = sys.argv[1:]
+    parser = argparse.ArgumentParser("wk -- create and delete git worktrees with ease")
+    parser.add_argument("branch", nargs="?")
+    parser.add_argument("--claude", action="store_true")
+    args = parser.parse_args()
 
-    if args and args[0] == "delete":
+    if args.branch == "delete":
         cmd_delete()
         return
 
@@ -61,16 +65,15 @@ def main():
     worktree_path = repo_root / ".worktrees" / name
     worktree_path.parent.mkdir(exist_ok=True)
 
-    copy_claude = "--claude" in args
-    if copy_claude:
-        args.remove("--claude")
-
-    branch = args[0] if args else None
+    branch = args.branch
     if branch:
-        branch_exists = subprocess.run(
-            ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{branch}"],
-            capture_output=True,
-        ).returncode == 0
+        branch_exists = (
+            subprocess.run(
+                ["git", "show-ref", "--verify", "--quiet", f"refs/heads/{branch}"],
+                capture_output=True,
+            ).returncode
+            == 0
+        )
         if branch_exists:
             cmd = ["git", "worktree", "add", str(worktree_path), branch]
         else:
@@ -83,7 +86,7 @@ def main():
         )
     subprocess.run(cmd, check=True)
 
-    if copy_claude:
+    if args.claude:
         claude_dir = Path.home() / ".claude" / "projects"
         cwd = Path.cwd()
         src = claude_dir / cwd.as_posix().replace("/", "-")
