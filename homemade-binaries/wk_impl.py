@@ -20,6 +20,11 @@ SPEC:
 """
 
 
+class ArgumentParser(argparse.ArgumentParser):
+    def print_help(self, file=None):
+        super().print_help(file or sys.stderr)
+
+
 def cmd_delete():
     # Find the common git dir — works from both main worktree and linked worktrees
     result = subprocess.run(
@@ -34,12 +39,18 @@ def cmd_delete():
         git_common_dir = Path.cwd() / git_common_dir
     main_repo_root = git_common_dir.parent
 
-    subprocess.run(["git", "worktree", "remove", str(Path.cwd())], check=True)
+    subprocess.run(
+        ["git", "worktree", "remove", str(Path.cwd())],
+        check=True,
+        stdout=sys.stderr,
+    )
     print(main_repo_root)
 
 
 def main():
-    parser = argparse.ArgumentParser("wk -- create and delete git worktrees with ease")
+    parser = ArgumentParser(
+        prog="wk", description="Create and delete Git worktrees with ease"
+    )
     parser.add_argument("branch", nargs="?")
     parser.add_argument("--claude", action="store_true")
     args = parser.parse_args()
@@ -81,10 +92,11 @@ def main():
     else:
         cmd = ["git", "worktree", "add", "--detach", str(worktree_path)]
         print(
-            "Due to how `git worktree` works you are in a detached HEAD state."
-            "Run `git checkout -b <branch_name>` to get a branch :)"
+            "Due to how `git worktree` works you are in a detached HEAD state. "
+            "Run `git checkout -b <branch_name>` to get a branch :)",
+            file=sys.stderr,
         )
-    subprocess.run(cmd, check=True)
+    subprocess.run(cmd, check=True, stdout=sys.stderr)
 
     if args.claude:
         claude_dir = Path.home() / ".claude" / "projects"
