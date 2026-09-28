@@ -28,8 +28,9 @@ undo = false                # No git ghost commits
 network_access = true
 
 [tui]
-animations = true            # Don't animate text in the TUI (makes it possible to copy/paste login URL)
-whimsy = false               # Remove Astra dots fading in and out (https://github.com/openai/codex/issues/44561)
+animations = true              # Don't animate text in the TUI (makes it possible to copy/paste login URL)
+whimsy = false                 # Remove Astra dots fading in and out (https://github.com/openai/codex/issues/44561)
+fullscreen_transcript = false  # Allow tmux to scroll back
 
 [[hooks.Stop]]
 
