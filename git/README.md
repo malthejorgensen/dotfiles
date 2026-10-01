@@ -8,6 +8,12 @@ after that initial call in the shims.
 **References:**
 - <https://github.com/pre-commit/pre-commit/issues/1198#issuecomment-547521278>
 
+The Git LFS calls in `post-checkout`, `post-commit`, `post-merge`, and
+`pre-push` run only when an indexed `.gitattributes` file (including nested
+ones) contains `filter=lfs`. Global LFS filter configuration alone does not
+enable them. Repositories with LFS tracking rules still require `git-lfs` on
+`PATH`. The other pre-push checks run regardless of LFS usage.
+
 ### Currently used hooks (non-shims)
 - `pre-push`: Checks for "!", "fixup" and "WIP" in commits before pushing
 
