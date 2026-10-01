@@ -1,7 +1,7 @@
 #!/usr/bin/env -S uv run --script
 
 # encoding: utf-8
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import argparse
 import json
@@ -17,7 +17,8 @@ except NameError:
     pass
 
 
-def pretty_path(path: str) -> str:
+def pretty_path(path):
+    # type: (str) -> str
     user_home = os.path.expanduser('~')
 
     return path.replace(user_home, '~')
@@ -33,7 +34,9 @@ def parse_path(path, path_app_dir):
 
 def ensure_dir_exists(path):
     # Make any directories that don't exist, e.g. "~/.config"
-    assert not path.endswith('/'), 'Ending "/" should already have been stripped from path'
+    assert not path.endswith('/'), (
+        'Ending "/" should already have been stripped from path'
+    )
 
     paths = []
     for i in range(100):
@@ -47,7 +50,7 @@ def ensure_dir_exists(path):
     for path in paths:
         if not os.path.exists(path):
             yesno = input(
-                '`%s` doesn\'t exist - do you want to create it? (Yes/No) '
+                "`%s` doesn't exist - do you want to create it? (Yes/No) "
                 % pretty_path(path)
             )
             if yesno.lower() == 'yes':
@@ -103,7 +106,7 @@ def check_file(full_path_source, full_path_target, verbose):
     # type: (str, str, bool) -> bool
     if not os.path.lexists(full_path_target):
         if verbose:
-            print(u'❌ %s does not exist.' % (pretty_path(full_path_target),))
+            print('❌ %s does not exist.' % (pretty_path(full_path_target),))
         return False
 
     # Strip ending '/' as symlink operations don't work with paths ending in '/'
@@ -113,7 +116,7 @@ def check_file(full_path_source, full_path_target, verbose):
     if not os.path.islink(full_path_target):
         if verbose:
             print(
-                u'❌ %s exists but is not a symlink.' % (pretty_path(full_path_target),)
+                '❌ %s exists but is not a symlink.' % (pretty_path(full_path_target),)
             )
         return False
 
@@ -121,7 +124,7 @@ def check_file(full_path_source, full_path_target, verbose):
     if current_symlink_target != full_path_source:
         if verbose:
             print(
-                u'❓ %s is a symlink, but points to %s. Expected %s'
+                '❓ %s is a symlink, but points to %s. Expected %s'
                 % (
                     pretty_path(full_path_target),
                     pretty_path(current_symlink_target),
@@ -133,7 +136,7 @@ def check_file(full_path_source, full_path_target, verbose):
     if current_symlink_target == full_path_source:
         if verbose:
             print(
-                u'✅ %s is a symlink correctly pointing to %s'
+                '✅ %s is a symlink correctly pointing to %s'
                 % (pretty_path(full_path_target), pretty_path(full_path_source))
             )
         return True
@@ -172,10 +175,14 @@ def import_file(full_path_source, full_path_target):
             follow_symlinks=False,
         )
 
+
 def export_file(full_path_source, full_path_target, should_force=False):
     # type: (str, str, bool) -> None
     if not os.path.exists(full_path_source):
-        print('Source "%s" does not exist. Not exporting.' % (pretty_path(full_path_source),))
+        print(
+            'Source "%s" does not exist. Not exporting.'
+            % (pretty_path(full_path_source),)
+        )
         return
 
     does_exist = False
@@ -191,7 +198,12 @@ def export_file(full_path_source, full_path_target, should_force=False):
             return
 
     print(
-        'Exporting %s to %s%s' % (pretty_path(full_path_source), pretty_path(full_path_target), str_overwritten)
+        'Exporting %s to %s%s'
+        % (
+            pretty_path(full_path_source),
+            pretty_path(full_path_target),
+            str_overwritten,
+        )
     )
     # Even with `follow_symlinks=False` `shutil.copyfile`/`shutil.copy2` will
     # still raise `SameFileError` when the target is a symlink pointing to the
@@ -223,7 +235,8 @@ def uninstall_file(full_path_source, full_path_target, should_force=False):
     if not should_force:
         if not is_symlink:
             print(
-                '%s is not a symlink. Not uninstalling.' % (pretty_path(full_path_target),)
+                '%s is not a symlink. Not uninstalling.'
+                % (pretty_path(full_path_target),)
             )
             return
 
@@ -239,9 +252,7 @@ def uninstall_file(full_path_source, full_path_target, should_force=False):
             )
             return
 
-    print(
-        'Removing %s' % pretty_path(full_path_target)
-    )
+    print('Removing %s' % pretty_path(full_path_target))
     if is_symlink:
         os.remove(full_path_target)
     else:
@@ -329,11 +340,15 @@ for app_dir in app_dirs:
                     )
                     is_installed = is_installed and is_file_correct_installed
                 elif args.uninstall:
-                    uninstall_file(full_path_source, full_path_target, should_force=args.force)
+                    uninstall_file(
+                        full_path_source, full_path_target, should_force=args.force
+                    )
                 elif args._import:
                     import_file(full_path_target, full_path_source)
                 elif args._export:
-                    export_file(full_path_source, full_path_target, should_force=args.force)
+                    export_file(
+                        full_path_source, full_path_target, should_force=args.force
+                    )
                 else:
                     is_installed = check_file(
                         full_path_source, full_path_target, verbose=True
@@ -350,6 +365,6 @@ for app_dir in app_dirs:
 
     if args.check:
         if is_installed:
-            print(u'✅ %s' % app_dir)
+            print('✅ %s' % app_dir)
         else:
-            print(u'❌ %s' % app_dir)
+            print('❌ %s' % app_dir)
