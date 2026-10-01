@@ -1,3 +1,4 @@
+target-version = "py37"  # target as old a Python as possible (on Debian or Ubuntu, the system Python is often ancient)
 line-length = 88
 
 [format]

@@ -1,6 +1,6 @@
 #!/usr/bin/env -S uv run --script
-
 # encoding: utf-8
+
 from __future__ import print_function, unicode_literals
 
 import argparse
@@ -30,6 +30,27 @@ def parse_path(path, path_app_dir):
 
     # http://stackoverflow.com/questions/4028904/how-to-get-the-home-directory-in-python
     return os.path.expanduser(path)
+
+
+def shutil_copy2_backport(source, target, follow_symlinks):
+    """'Backport of Python 3.7's `shutil.copy2(..., follow_symlinks=False)`.
+
+    Python 2.7 does not have the `follow_symlinks`-argument and _always_
+    follows symlinks. This is function is workaround.
+    """
+    assert follow_symlinks is False, (
+        'shutil_copy2_backport: `follow_symlinks` must be False'
+    )
+    if os.path.islink(source):
+        os.symlink(os.readlink(source), target)
+        # Copy over file attributes (e.g. executability)
+        stat = os.lstat(source)
+        flags = stat.st_flags
+        os.lchflags(target, flags)
+        mode = stat.st_mode
+        os.lchmod(target, mode)
+    else:
+        shutil.copy2(source, target)
 
 
 def ensure_dir_exists(path):
@@ -169,7 +190,7 @@ def import_file(full_path_source, full_path_target):
             full_path_target,
         )
     else:
-        shutil.copy2(
+        shutil_copy2_backport(
             full_path_source,
             full_path_target,
             follow_symlinks=False,
@@ -217,7 +238,7 @@ def export_file(full_path_source, full_path_target, should_force=False):
             full_path_target,
         )
     else:
-        shutil.copy2(
+        shutil_copy2_backport(
             full_path_source,
             full_path_target,
             follow_symlinks=False,
