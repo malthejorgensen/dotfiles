@@ -32,6 +32,14 @@ network_proxy = true        # Required to enforce the network domain allowlist b
 # See: https://github.com/openai/codex/issues/5914#issuecomment-3505687500
 network_access = true
 
+[shell_environment_policy.set]
+# Give uv a writable location for Python and tool executable links without
+# making ~/.local/bin writable. Use absolute paths here; these values are
+# environment strings, not filesystem rules with home-directory expansion.
+# Invoke these links by absolute path or add this directory to the agent PATH.
+UV_PYTHON_BIN_DIR = "/Users/malthejorgensen/.cache/codex-bin"
+UV_TOOL_BIN_DIR = "/Users/malthejorgensen/.cache/codex-bin"
+
 [tui]
 animations = true              # Don't animate text in the TUI (makes it possible to copy/paste login URL)
 whimsy = false                 # Remove Astra dots fading in and out (https://github.com/openai/codex/issues/44561)
