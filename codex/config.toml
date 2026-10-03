@@ -23,6 +23,7 @@ web_search = "cached"
 [features]
 shell_snapshot = true       # Speed up repeated commands
 undo = false                # No git ghost commits
+multi_agent = true          # New setting in Codex ???
 
 [sandbox_workspace_write]
 # Fixes `uv` when running in sandbox (system-configuration / dynamic_store.rs)
@@ -35,7 +36,6 @@ whimsy = false                 # Remove Astra dots fading in and out (https://gi
 fullscreen_transcript = false  # Allow tmux to scroll back
 
 [[hooks.Stop]]
-
 [[hooks.Stop.hooks]]
 type = "command"
 command = "python3 /Users/malthejorgensen/.codex/notifier.py"
