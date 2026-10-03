@@ -13,6 +13,8 @@ approvals_reviewer = "auto_review"
 #
 # Default to writeable sandbox
 sandbox_mode = "workspace-write"
+# Use the permission set "malthe-sandbox"
+default_permissions = "malthe-sandbox"
 # Sane approval policy
 approval_policy = "on-request" # Other options: "untrusted", "never"
 # Allow the model to request web searches
@@ -37,6 +39,43 @@ fullscreen_transcript = false  # Allow tmux to scroll back
 [[hooks.Stop.hooks]]
 type = "command"
 command = "python3 /Users/malthejorgensen/.codex/notifier.py"
+
+# Create our own sandbox/permissions mode "malthe-sandbox"
+#
+# See: https://www.codex-docs.com/en/docs/permissions
+[permissions.malthe-sandbox]
+# By extending the :workspace profile, you get Codex's safeguards to ensure
+# subfolders such as .codex/ and .git/ within a workspace root are read-only
+# while the rest of the folder is writable.
+extends = ":workspace"
+[permissions.malthe-sandbox.filesystem]
+# By default, deny read access to all files on disk.
+":root" = "deny"
+# Though in practice, a software agent needs to be able to read folders that
+# contain common tools, such as `/usr/bin`, to get work done, so grant access
+# to a "minimal" set of files and folders, as determined by Codex.
+":minimal" = "read"
+# By extending the :workspace profile, :tmpdir and :slash_tmp are "write" by
+# default, though you can deny access to them altogether, if desired.
+":tmpdir" = "write"
+":slash_tmp" = "write"
+[permissions.malthe-sandbox.filesystem.":workspace_roots"]
+# Generally allow writing inside the project
+"." = "write"
+# Disallow reading env-files
+"**/*.env" = "deny"
+"**/*.env.*" = "deny"
+# Disallow Malthe's custom .prompts and .plans directories
+# (avoids confusion)
+".prompts" = "deny"
+".plans" = "deny"
+[permissions.malthe-sandbox.network]
+enabled = true
+[permissions.malthe-sandbox.network.domains]
+"api.openai.com" = "allow"
+"objects.githubusercontent.com" = "allow"
+"*.github.com" = "allow"
+
 
 [mcp_servers.railway]
 command = "railway"
