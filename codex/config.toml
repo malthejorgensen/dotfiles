@@ -14,8 +14,8 @@ approvals_reviewer = "auto_review"
 #
 # Default to writeable sandbox
 sandbox_mode = "workspace-write"
-# Use the permission set "malthe-sandbox"
-default_permissions = "malthe-sandbox"
+# [DISABLED] Use the permission set "malthe-sandbox"
+# default_permissions = "malthe-sandbox"
 # Sane approval policy
 approval_policy = "on-request" # Other options: "untrusted", "never"
 # Allow the model to request web searches
