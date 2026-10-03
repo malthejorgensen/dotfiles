@@ -25,6 +25,7 @@ web_search = "cached"
 shell_snapshot = true       # Speed up repeated commands
 undo = false                # No git ghost commits
 multi_agent = true          # New setting in Codex ???
+network_proxy = true        # Required to enforce the network domain allowlist below.
 
 [sandbox_workspace_write]
 # Fixes `uv` when running in sandbox (system-configuration / dynamic_store.rs)
