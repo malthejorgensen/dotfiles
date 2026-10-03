@@ -111,8 +111,11 @@ extends = ":workspace"
 # Generally allow writing inside the project
 "." = "write"
 # Disallow reading env-files
-"**/*.env" = "deny"
-"**/*.env.*" = "deny"
+# - Ideally this would be `**/.env` and `**/env.*`, but those rules will deny Codex from deleting or renmaing _any_ directory in the repo, regardless of whether it contains an `.env`-file.
+#   To workaround this we only deny at the root for now.
+#   `*/.env` would make it so that directories in the root of the repo can not be renamed or deleted by Codex.
+".env" = "deny"
+".env.*" = "deny"
 # Disallow Malthe's custom .prompts and .plans directories
 # (avoids confusion)
 ".prompts" = "deny"
