@@ -52,14 +52,52 @@ extends = ":workspace"
 [permissions.malthe-sandbox.filesystem]
 # By default, deny read access to all files on disk.
 ":root" = "deny"
+
 # Though in practice, a software agent needs to be able to read folders that
 # contain common tools, such as `/usr/bin`, to get work done, so grant access
 # to a "minimal" set of files and folders, as determined by Codex.
 ":minimal" = "read"
+
 # By extending the :workspace profile, :tmpdir and :slash_tmp are "write" by
 # default, though you can deny access to them altogether, if desired.
 ":tmpdir" = "write"
 ":slash_tmp" = "write"
+
+# Installed tools and their libraries, scripts, and SDKs.
+"/opt/homebrew" = "read"
+"/opt/local" = "read"
+"/System/Library/OpenSSL" = "read"
+"/Library/Developer/CommandLineTools" = "read"
+"~/.local/bin" = "read"
+"~/.local/share/mise" = "read"
+
+# Codex's bundled tool runtime.
+"~/.cache/codex-runtimes" = "read"
+
+# Built-in skills, plugin skills and their supporting files, and personal skills.
+"~/.codex/skills" = "read"
+"~/.codex/plugins/cache" = "read"
+"~/.agents/skills" = "read"
+# Symlinked skills stored elsewhere also need access to their target directory.
+
+# Allow reading git config
+"~/.config/git" = "read"
+
+# uv package cache, managed Python installations, and tool environments.
+"~/.cache/uv" = "write"
+"~/.local/share/uv/python" = "write"
+"~/.local/share/uv/tools" = "write"
+"~/.cache/codex-bin" = "write"
+
+# npm, pnpm, Corepack, and native Node module build caches.
+"~/.npm" = "write"
+"~/Library/pnpm/store" = "write"
+"~/Library/Caches/pnpm" = "write"
+"~/Library/Caches/node-gyp" = "write"
+"~/.cache/node/corepack" = "write"
+# Allow Corepack cache
+ "~/.cache/node" = "write"
+
 [permissions.malthe-sandbox.filesystem.":workspace_roots"]
 # Generally allow writing inside the project
 "." = "write"
@@ -70,12 +108,30 @@ extends = ":workspace"
 # (avoids confusion)
 ".prompts" = "deny"
 ".plans" = "deny"
+
 [permissions.malthe-sandbox.network]
 enabled = true
+
 [permissions.malthe-sandbox.network.domains]
+# OpenAI API.
 "api.openai.com" = "allow"
-"objects.githubusercontent.com" = "allow"
+
+# GitHub repositories, APIs, raw files, and release downloads.
+"github.com" = "allow"
 "*.github.com" = "allow"
+"objects.githubusercontent.com" = "allow"
+"release-assets.githubusercontent.com" = "allow"
+"raw.githubusercontent.com" = "allow"
+
+# npm and pnpm packages.
+"registry.npmjs.org" = "allow"
+
+# Python package index and package downloads.
+"pypi.org" = "allow"
+"files.pythonhosted.org" = "allow"
+
+# Node headers for native module builds.
+"nodejs.org" = "allow"
 
 
 [mcp_servers.railway]
