@@ -40,6 +40,11 @@ network_access = true
 UV_PYTHON_BIN_DIR = "/Users/malthejorgensen/.cache/codex-bin"
 UV_TOOL_BIN_DIR = "/Users/malthejorgensen/.cache/codex-bin"
 
+# git uses SSH which in turn runs ProxyCommand through $SHELL.
+# Use a shell that does not load fish's personal configuration or
+# universal-variable state for noninteractive helpers.
+SHELL = "/bin/sh"
+
 [tui]
 animations = true              # Don't animate text in the TUI (makes it possible to copy/paste login URL)
 whimsy = false                 # Remove Astra dots fading in and out (https://github.com/openai/codex/issues/44561)
@@ -95,6 +100,12 @@ extends = ":workspace"
 "~/dotfiles/git/gitconfig" = "read"
 "~/dotfiles/git/gitattributes" = "read"
 "~/dotfiles/git/gitignore_global" = "read"
+
+# `git fetch` on ssh:// remotes need host verification and configured host/agent settings.
+# Keep private keys and the rest of ~/.ssh outside the allowlist. Configuration
+# Includes or symlink targets elsewhere need their own exact read permissions.
+"~/.ssh/known_hosts" = "read"
+"~/.ssh/config" = "read"
 
 # uv package cache, managed Python installations, and tool environments.
 "~/.cache/uv" = "write"
