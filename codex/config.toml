@@ -45,6 +45,11 @@ UV_TOOL_BIN_DIR = "/Users/malthejorgensen/.cache/codex-bin"
 # universal-variable state for noninteractive helpers.
 SHELL = "/bin/sh"
 
+# `npm` starts `sh` through PATH lookup. A denied PATH directory can
+# produce spawn EPERM before it reaches /bin/sh; npm also prepends ancestor
+# node_modules/.bin directories. SHELL alone does not control npm script-shell.
+npm_config_script_shell = "/bin/sh"
+
 [tui]
 animations = true              # Don't animate text in the TUI (makes it possible to copy/paste login URL)
 whimsy = false                 # Remove Astra dots fading in and out (https://github.com/openai/codex/issues/44561)
