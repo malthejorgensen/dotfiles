@@ -689,6 +689,12 @@ function codex-local
   env SHELL=/bin/zsh CODEX_HOME="$CODEX_DIR" codex $argv
 end
 
+# Codex
+function codex
+  # This is to make things work with the `malthe-sandbox` permission set
+  command codex -c "shell_environment_policy.set.PATH=\"$HOME/.cache/codex-bin:$PATH\"" $argv
+end
+
 # pnpm
 if type -q -f pnpm
   set -gx PNPM_HOME "/Users/malthejorgensen/Library/pnpm"
