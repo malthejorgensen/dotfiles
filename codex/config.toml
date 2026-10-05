@@ -127,8 +127,14 @@ extends = ":workspace"
 
 [permissions.malthe-sandbox.network]
 enabled = true
+allow_local_binding = true
 
 [permissions.malthe-sandbox.network.domains]
+# Localhost loopback -- to allow dev servers
+"localhost" = "allow"
+"127.0.0.1" = "allow"
+"::1" = "allow"
+
 # OpenAI API.
 "api.openai.com" = "allow"
 
