@@ -663,32 +663,6 @@ type -q -f direnv; and direnv hook fish | source
 # -- this _should_ help it not getting confused about where it is.
 set -Ux CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR 1
 
-# OpenAI Codex: Use `.codex/config.toml` in current directory
-# -- as of 2025-10-01 `codex` doesn't have per-project settings
-function codex-local
-  set -f CODEX_DIR "$(pwd)/.codex"
-  if [ ! -e "$CODEX_DIR" ]
-    read -l -P ".codex does not exist, do you want to import it from your global settings? [Y/n]" confirm
-
-    if [ $status -ne 0 ]
-      return
-    end
-
-    # Always make the `.codex`-dir and copy over `auth.json`
-    mkdir "$CODEX_DIR"
-    cp ~/.codex/auth.json "$CODEX_DIR/auth.json"
-
-    if [ "$confirm" = 'Y' -o "$confirm" = 'y' ]
-      cp ~/dotfiles/codex/config.toml "$CODEX_DIR/config.toml"
-    end
-  end
-  # Codex always uses `zsh` on macOS, but our environment says `$SHELL=/opt/homebrew/bin/fish`
-  # which in turn confuses Homebrew which is called in ~/.zprofile for `eval $(brew shellenv)`
-  # 
-  # See: https://github.com/openai/codex/issues/3823
-  env SHELL=/bin/zsh CODEX_HOME="$CODEX_DIR" codex $argv
-end
-
 # Codex
 function codex
   # This is to make things work with the `malthe-sandbox` permission set
