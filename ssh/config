@@ -1,5 +1,5 @@
-# %d means $HOME
-Include %d/.colima/ssh_config
+# `colima` needs this otherwise it auto-injects it
+Include ~/.colima/ssh_config
 
 Host *
     # OS X 10.12 (Sierra): Make `ssh-agent` work
