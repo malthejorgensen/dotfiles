@@ -91,6 +91,10 @@ extends = ":workspace"
 
 # Allow reading git config
 "~/.config/git" = "read"
+# - the above is a symlink so we need to add the symlink destination:
+"~/dotfiles/git/gitconfig" = "read"
+"~/dotfiles/git/gitattributes" = "read"
+"~/dotfiles/git/gitignore_global" = "read"
 
 # uv package cache, managed Python installations, and tool environments.
 "~/.cache/uv" = "write"
