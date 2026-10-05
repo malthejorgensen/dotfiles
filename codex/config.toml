@@ -124,6 +124,12 @@ extends = ":workspace"
 # (avoids confusion)
 ".prompts" = "deny"
 ".plans" = "deny"
+# git: Allow commits and rebases
+".git" = "write"
+# git: Keep the config and hooks as-is (maybe we should open these up to "write" at some point)
+".git/config" = "read"
+".git/config.worktree" = "read"
+".git/hooks" = "read"
 
 [permissions.malthe-sandbox.network]
 enabled = true
