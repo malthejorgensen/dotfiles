@@ -4,7 +4,7 @@
             "complex_modifications": {
                 "rules": [
                     {
-                        "description": "Right Shift: Escape when tapped, Shift with other keys",
+                        "description": "Right Shift: Escape on release if pressed alone (no timeout), Shift with other keys",
                         "manipulators": [
                             {
                                 "type": "basic",
@@ -13,9 +13,55 @@
                                     "modifiers": { "optional": ["any"] }
                                 },
                                 "to": [
+                                    {
+                                        "set_variable": {
+                                            "name": "right_shift_pressed_alone",
+                                            "value": true
+                                        }
+                                    },
                                     { "key_code": "right_shift", "lazy": true }
                                 ],
-                                "to_if_alone": [{ "key_code": "escape" }]
+                                "to_if_other_key_pressed": [
+                                    {
+                                        "other_keys": [
+                                            {
+                                                "any": "key_code",
+                                                "modifiers": { "optional": ["any"] }
+                                            },
+                                            {
+                                                "any": "consumer_key_code",
+                                                "modifiers": { "optional": ["any"] }
+                                            }
+                                        ],
+                                        "to": [
+                                            {
+                                                "set_variable": {
+                                                    "name": "right_shift_pressed_alone",
+                                                    "value": false
+                                                }
+                                            },
+                                            { "key_code": "right_shift" }
+                                        ]
+                                    }
+                                ],
+                                "to_after_key_up": [
+                                    {
+                                        "key_code": "escape",
+                                        "conditions": [
+                                            {
+                                                "type": "variable_if",
+                                                "name": "right_shift_pressed_alone",
+                                                "value": true
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "set_variable": {
+                                            "name": "right_shift_pressed_alone",
+                                            "value": false
+                                        }
+                                    }
+                                ]
                             }
                         ]
                     },
