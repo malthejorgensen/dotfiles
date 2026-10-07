@@ -78,17 +78,18 @@ config.keys = {
       args = { 'vim', wezterm.config_file },
     },
   },
-  -- Latest Codex CLI uses Shift+Left for answering questions, so we disable these for now
-  -- {
-  --   key = 'LeftArrow',
-  --   mods = 'SHIFT',
-  --   action = wezterm.action.MoveTabRelative(-1),
-  -- },
-  -- {
-  --   key = 'RightArrow',
-  --   mods = 'SHIFT',
-  --   action = wezterm.action.MoveTabRelative(1),
-  -- },
+  -- Use Cmd+Left/Right for moving tabs left and right
+  -- Latest Codex CLI uses Shift+Left for answering questions, so can't use that
+  {
+    key = 'LeftArrow',
+    mods = 'CMD',
+    action = wezterm.action.MoveTabRelative(-1),
+  },
+  {
+    key = 'RightArrow',
+    mods = 'CMD',
+    action = wezterm.action.MoveTabRelative(1),
+  },
   {
     key = 'Enter',
     mods = 'ALT',
