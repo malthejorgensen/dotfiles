@@ -10,5 +10,11 @@
     "type": "symlink",
     "source": "./notifier.py",
     "target": "~/.codex/notifier.py"
+  },
+  {
+    "comment": "Focus-aware notifications via Hammerspoon",
+    "type": "symlink",
+    "source": "./notifier-hammerspoon.py",
+    "target": "~/.codex/notifier-hammerspoon.py"
   }
 ]

@@ -69,3 +69,5 @@ hs.hotkey.bind({"ctrl"}, "§", function()
 end)
 
 hs.loadSpoon("MalthesMoveWindow")
+
+require("codex-notifier")

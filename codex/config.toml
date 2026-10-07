@@ -58,7 +58,7 @@ fullscreen_transcript = false  # Allow tmux to scroll back
 [[hooks.Stop]]
 [[hooks.Stop.hooks]]
 type = "command"
-command = "python3 /Users/malthejorgensen/.codex/notifier.py"
+command = "python3 /Users/malthejorgensen/.codex/notifier-hammerspoon.py"
 
 # Create our own sandbox/permissions mode "malthe-sandbox"
 #
