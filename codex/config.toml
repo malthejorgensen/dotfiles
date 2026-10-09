@@ -150,6 +150,8 @@ extends = ":workspace"
 [permissions.malthe-sandbox.network]
 enabled = true
 allow_local_binding = true
+# Required for `npm test`/Node.js IPC
+dangerously_allow_all_unix_sockets = true
 
 [permissions.malthe-sandbox.network.domains]
 # Localhost loopback -- to allow dev servers
