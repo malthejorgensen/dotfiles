@@ -49,12 +49,12 @@ def cmd_delete():
 
 def main():
     parser = ArgumentParser(
-        prog="wk", description="Create and delete Git worktrees with ease"
+        prog="wk", description="Create, list and delete Git worktrees with ease"
     )
     parser.add_argument(
         "branch",
         nargs="?",
-        help="git branch to check out (will be created if it doesn't exist)",
+        help="git branch to check out (will be created if it doesn't exist), or 'list'",
     )
     parser.add_argument("--delete", action="store_true", help="Delete worktree")
     parser.add_argument(
@@ -64,6 +64,11 @@ def main():
 
     if args.branch == "delete" or args.delete:
         cmd_delete()
+        return
+
+    if args.branch == "list":
+        # stdout is reserved for the destination consumed by the Fish wrapper.
+        subprocess.run(["git", "worktree", "list"], check=True, stdout=sys.stderr)
         return
 
     # Find git repo root
