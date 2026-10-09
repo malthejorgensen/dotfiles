@@ -54,7 +54,7 @@ def main():
     parser.add_argument(
         "branch",
         nargs="?",
-        help="git branch to check out (will be created if it doesn't exist), or 'list'",
+        help="git branch to go to (worktree and branch will be created if needed), or 'list'",
     )
     parser.add_argument("--delete", action="store_true", help="Delete worktree")
     parser.add_argument(
@@ -80,6 +80,19 @@ def main():
         sys.exit(1)
 
     repo_root = Path(result.stdout.strip())
+
+    if args.branch:
+        result = subprocess.run(
+            ["git", "worktree", "list", "--porcelain", "-z"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        for worktree in result.stdout.split("\0\0"):
+            fields = worktree.split("\0")
+            if f"branch refs/heads/{args.branch}" in fields:
+                print(fields[0].removeprefix("worktree "))
+                return
 
     claude_src = None
     if args.claude:
