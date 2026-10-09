@@ -157,8 +157,10 @@ allow_local_binding = true
 "127.0.0.1" = "allow"
 "::1" = "allow"
 
-# OpenAI API.
+# OpenAI API
 "api.openai.com" = "allow"
+# OpenAI docs
+"learn.openai.com" = "allow"
 
 # GitHub repositories, APIs, raw files, and release downloads.
 "github.com" = "allow"
