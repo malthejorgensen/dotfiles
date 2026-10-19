@@ -70,4 +70,5 @@ end)
 
 hs.loadSpoon("MalthesMoveWindow")
 
+require("keyboard-lock")
 require("codex-notifier")
