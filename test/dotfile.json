@@ -10,5 +10,11 @@
     "type": "symlink",
     "source": "./",
     "target": "~/.config/dotfiles-self-test/a/different/long/path/config_directory"
+  },
+  {
+    "comment": "Test: Check that we can symlink this directory (and ending with `/`)",
+    "type": "symlink",
+    "source": "./example",
+    "target": "~/.config/dotfiles-self-test/a/third/long/path/example-dir"
   }
 ]
