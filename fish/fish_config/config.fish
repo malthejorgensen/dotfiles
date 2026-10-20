@@ -665,8 +665,22 @@ set -Ux CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR 1
 
 # Codex
 function codex
-  # This is to make things work with the `malthe-sandbox` permission set
-  command codex -c "shell_environment_policy.set.PATH=\"$HOME/.cache/codex-bin:$PATH\"" $argv
+  set -l config_args -c "shell_environment_policy.set.PATH=\"$HOME/.cache/codex-bin:$PATH\""
+
+  # In a linked worktree, the shared Git directory differs from its own Git directory.
+  set -l git_dirs (command git rev-parse --path-format=absolute --git-common-dir --git-dir 2>/dev/null)
+  if test (count $git_dirs) -eq 2; and test "$git_dirs[1]" != "$git_dirs[2]"
+    # JSON strings also quote TOML paths correctly.
+    set -l quoted_dirs (python3 -c 'import json, sys; [print(json.dumps(path, ensure_ascii=False)) for path in sys.argv[1:]]' $git_dirs)
+    or return
+    set -l git_rules
+    for dir in $quoted_dirs
+      set -a git_rules "$dir = { \".\" = \"write\", config = \"read\", \"config.worktree\" = \"read\", hooks = \"read\" }"
+    end
+    set -a config_args -c "permissions.worktree-git.filesystem={ "(string join ', ' -- $git_rules)" }"
+  end
+
+  command codex $config_args $argv
 end
 
 # pnpm

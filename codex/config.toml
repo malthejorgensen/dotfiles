@@ -63,10 +63,17 @@ fullscreen_transcript = false  # Allow tmux to scroll back
 type = "command"
 command = "python3 /Users/malthejorgensen/.codex/notifier-hammerspoon.py"
 
+# Permission profile "workspace-git"
+# - this is a shared parent profile that the Fish `codex`-function uses
+#   to inject write permissions for the root .git-directory when in a git
+#   worktree
+[permissions.worktree-git]
+extends = ":workspace"
+
 # Permission profile "workspace-network"
 # - this is simply the built-in `:workspace` with full network access
 [permissions.workspace-network]
-extends = ":workspace"
+extends = "worktree-git"
 
 [permissions.workspace-network.network]
 enabled = true
@@ -84,7 +91,7 @@ allow_local_binding = true
 # By extending the :workspace profile, you get Codex's safeguards to ensure
 # subfolders such as .codex/ and .git/ within a workspace root are read-only
 # while the rest of the folder is writable.
-extends = ":workspace"
+extends = "worktree-git"
 [permissions.malthe-sandbox.filesystem]
 # By default, deny read access to all files on disk.
 ":root" = "deny"
