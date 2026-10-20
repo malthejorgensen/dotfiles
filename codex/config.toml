@@ -28,11 +28,6 @@ undo = false                # No git ghost commits
 multi_agent = true          # New setting in Codex ???
 network_proxy = true        # Required to enforce the network domain allowlist below.
 
-[sandbox_workspace_write]
-# Fixes `uv` when running in sandbox (system-configuration / dynamic_store.rs)
-# See: https://github.com/openai/codex/issues/5914#issuecomment-3505687500
-network_access = true
-
 [shell_environment_policy.set]
 # Give uv a writable location for Python and tool executable links without
 # making ~/.local/bin writable. Use absolute paths here; these values are
