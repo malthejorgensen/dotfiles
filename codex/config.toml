@@ -15,11 +15,11 @@ service_tier = "default"
 # Configure either `default_permissions` and `[permissions]`
 # or `sandbox_mode` / `sandbox_workspace_write`, but not both.
 #
-# MODE A (permission set, built-in `sandbox-mode`)
-default_permissions = ":workspace" # Default to writeable sandbox inside repo
-# MODE B (permission set, custom)
-# default_permissions = "malthe-sandbox"
-# MODE C (old, deprecated `sandbox-mode`)
+# MODE A (new, permission profiles)
+default_permissions = "workspace-network"  # Custom: Same as `:workspace` but with unrestricted network access
+# default_permissions = ":workspace"       # Built-in profile without network access
+# default_permissions = "malthe-sandbox"   # Custom: Access to cache and config dirs, but narrow network access
+# MODE B (old, deprecated `sandbox-mode`)
 # sandbox_mode = "workspace-write" # Default to writeable sandbox inside repo
 
 # Sane approval policy
@@ -63,9 +63,23 @@ fullscreen_transcript = false  # Allow tmux to scroll back
 type = "command"
 command = "python3 /Users/malthejorgensen/.codex/notifier-hammerspoon.py"
 
-# Create our own sandbox/permissions mode "malthe-sandbox"
-#
-# See: https://www.codex-docs.com/en/docs/permissions
+# Permission profile "workspace-network"
+# - this is simply the built-in `:workspace` with full network access
+[permissions.workspace-network]
+extends = ":workspace"
+
+[permissions.workspace-network.network]
+enabled = true
+allow_local_binding = true
+
+[permissions.workspace-network.network.domains]
+"*" = "allow"
+"localhost" = "allow"
+"127.0.0.1" = "allow"
+"::1" = "allow"
+
+# Permission profile "malthe-sandbox"
+# - tries to make development with `uv`, `npm`, Postgres and Redis as easy as possible
 [permissions.malthe-sandbox]
 # By extending the :workspace profile, you get Codex's safeguards to ensure
 # subfolders such as .codex/ and .git/ within a workspace root are read-only
