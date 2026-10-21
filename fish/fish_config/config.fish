@@ -34,6 +34,9 @@ set -Ux LESS '-S -R --quit-if-one-screen'
 # -- breaks `poetry shell`
 # bind \cj backward-kill-line
 
+# Add ~/bin to $PATH
+fish_add_path -g "$HOME/bin"
+
 # Enable Homebrew
 if [ -e /opt/homebrew/bin/brew ]
   eval (/opt/homebrew/bin/brew shellenv)
@@ -44,9 +47,6 @@ if [ -e /opt/local/bin/port ]
   fish_add_path -g "/opt/local/bin"
   fish_add_path -g "/opt/local/sbin"
 end
-
-# Add ~/bin to $PATH
-fish_add_path -g "$HOME/bin"
 
 # Git prompt/statusline
 # From: https://www.martinklepsch.org/posts/git-prompt-for-fish-shell.html
