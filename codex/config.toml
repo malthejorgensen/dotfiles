@@ -178,7 +178,7 @@ allow_local_binding = true
 dangerously_allow_all_unix_sockets = true
 
 [permissions.malthe-sandbox.network.domains]
-# Localhost loopback -- to allow dev servers
+# Localhost loopback -- dev servers and Postgres over TCP.
 "localhost" = "allow"
 "127.0.0.1" = "allow"
 "::1" = "allow"
