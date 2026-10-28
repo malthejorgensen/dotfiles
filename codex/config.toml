@@ -132,6 +132,7 @@ extends = "worktree-git"
 "~/dotfiles/git/gitconfig" = "read"
 "~/dotfiles/git/gitattributes" = "read"
 "~/dotfiles/git/gitignore_global" = "read"
+"~/dotfiles/git/hooks" = "read"
 
 # `git fetch` on ssh:// remotes need host verification and configured host/agent settings.
 # Keep private keys and the rest of ~/.ssh outside the allowlist. Configuration
