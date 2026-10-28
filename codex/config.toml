@@ -114,6 +114,9 @@ extends = "worktree-git"
 "~/.local/bin" = "read"
 "~/.local/share/mise" = "read"
 
+# Terraform
+"~/.terraform.d" = "read"
+
 # Codex's bundled tool runtime.
 "~/.cache/codex-runtimes" = "read"
 
@@ -210,6 +213,9 @@ dangerously_allow_all_unix_sockets = true
 "bedrock.eu-central-1.amazonaws.com" = "allow"
 "iam.amazonaws.com" = "allow"
 
+# Terraform
+"registry.terraform.io" = "allow"
+"releases.hashicorp.com" = "allow"
 
 [mcp_servers.railway]
 command = "railway"
