@@ -190,6 +190,7 @@ dangerously_allow_all_unix_sockets = true
 "api.openai.com" = "allow"
 # OpenAI docs
 "learn.openai.com" = "allow"
+"learn.chatgpt.com" = "allow"
 
 # GitHub repositories, APIs, raw files, and release downloads.
 "github.com" = "allow"
