@@ -5,7 +5,7 @@
 	# See: http://stackoverflow.com/a/17045911/118608
 [core]
 	editor = /usr/bin/vim
-	hooksPath = ~/.git-hooks
+	hooksPath = ~/.config/git/hooks
 	mergetool = sublime
 	# mergetool = gvimdiff
 [user]

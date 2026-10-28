@@ -21,7 +21,7 @@
     "comment": "",
     "type": "symlink",
     "source": "./hooks",
-    "target": "~/.git-hooks"
+    "target": "~/.config/git/hooks"
   },
   {
     "comment": "",
