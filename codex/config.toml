@@ -205,6 +205,11 @@ dangerously_allow_all_unix_sockets = true
 # Node headers for native module builds.
 "nodejs.org" = "allow"
 
+# Azure and AWS
+"sts.eu-central-1.amazonaws.com" = "allow"
+"bedrock.eu-central-1.amazonaws.com" = "allow"
+"iam.amazonaws.com" = "allow"
+
 
 [mcp_servers.railway]
 command = "railway"
