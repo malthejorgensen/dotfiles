@@ -155,6 +155,9 @@ extends = "worktree-git"
 # Allow Corepack cache
  "~/.cache/node" = "write"
 
+# Github's `gh` CLI tool
+"~/.config/gh/config.yml" = "read"
+
 [permissions.malthe-sandbox.filesystem.":workspace_roots"]
 # Generally allow writing inside the project
 "." = "write"
