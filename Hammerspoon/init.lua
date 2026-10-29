@@ -69,6 +69,7 @@ hs.hotkey.bind({"ctrl"}, "§", function()
 end)
 
 hs.loadSpoon("MalthesMoveWindow")
+hs.loadSpoon("GithubPRClipboardLink")
 
 require("keyboard-lock")
 require("codex-notifier")
