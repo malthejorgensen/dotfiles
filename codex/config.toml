@@ -178,6 +178,10 @@ extends = "worktree-git"
 ".git/config.worktree" = "read"
 ".git/hooks" = "read"
 
+# Cloudflare `wrangler`
+"~/Library/Preferences/.wrangler/config/default.toml" = "read"
+"~/Library/Preferences/.wrangler/logs" = "write"
+
 [permissions.malthe-sandbox.network]
 enabled = true
 allow_local_binding = true
@@ -221,6 +225,12 @@ dangerously_allow_all_unix_sockets = true
 # Terraform
 "registry.terraform.io" = "allow"
 "releases.hashicorp.com" = "allow"
+
+# Cloudflare
+"api.cloudflare.com" = "allow"
+
+# Sentry MCP
+"mcp.sentry.dev" = "allow"
 
 [mcp_servers.railway]
 command = "railway"
