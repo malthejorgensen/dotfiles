@@ -121,6 +121,7 @@ extends = "worktree-git"
 "~/.cache/codex-runtimes" = "read"
 
 # Built-in skills, plugin skills and their supporting files, and personal skills.
+"~/.codex/config.toml" = "read" # Allow inspecting own config.toml
 "~/.codex/skills" = "read"
 "~/.codex/plugins/cache" = "read"
 "~/.agents/skills" = "read"
