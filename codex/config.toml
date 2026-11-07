@@ -233,6 +233,19 @@ dangerously_allow_all_unix_sockets = true
 # Sentry MCP
 "mcp.sentry.dev" = "allow"
 
+[permissions.xcode]
+extends = "malthe-sandbox"
+
+[permissions.xcode.filesystem]
+# Xcode and builds
+"/Applications/Xcode.app" = "read"
+# "/Library/Developer" = "read" # Disabled for now -- too broad
+"/Library/Developer/PrivateFrameworks" = "read"
+"/Library/Developer/PrivateFrameworks/CoreSimulator.framework" = "read"
+"~/Library/Developer/Xcode" = "write"
+"~/Library/Developer/CoreSimulator" = "write"
+"~/Library/Logs/CoreSimulator" = "write"
+
 [mcp_servers.railway]
 command = "railway"
 args = ["mcp"]
