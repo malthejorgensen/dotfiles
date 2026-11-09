@@ -245,6 +245,14 @@ extends = "malthe-sandbox"
 "~/Library/Developer/Xcode" = "write"
 "~/Library/Developer/CoreSimulator" = "write"
 "~/Library/Logs/CoreSimulator" = "write"
+"~/Library/org.swift.swiftpm/security" = "write"
+"~/Library/org.swift.swiftpm/configuration" = "write"
+
+# XCode caches
+"~/Library/Caches/org.swift.swiftpm/manifests/manifest.db" = "write"
+"~/Library/Caches/org.swift.swiftpm/manifests/ManifestLoading/blockingcore.dia" = "write"
+"~/Library/Caches/org.swift.swiftpm/package-collection.db" = "write"
+"/private/var/folders/" = "write"
 
 [mcp_servers.railway]
 command = "railway"
