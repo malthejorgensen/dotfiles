@@ -179,6 +179,11 @@ extends = "worktree-git"
 ".git/config.worktree" = "read"
 ".git/hooks" = "read"
 
+# AWS CLI
+"~/.aws/config" = "read"
+"~/.aws/sso/" = "read"
+"~/.aws/cli/cache/" = "write"
+
 # Cloudflare `wrangler`
 "~/Library/Preferences/.wrangler/config/default.toml" = "read"
 "~/Library/Preferences/.wrangler/logs" = "write"
@@ -222,6 +227,11 @@ dangerously_allow_all_unix_sockets = true
 "sts.eu-central-1.amazonaws.com" = "allow"
 "bedrock.eu-central-1.amazonaws.com" = "allow"
 "iam.amazonaws.com" = "allow"
+"portal.sso.eu-central-1.amazonaws.com" = "allow" # AWS SSO
+"ec2.eu-central-1.amazonaws.com" = "allow"
+"ssm.eu-central-1.amazonaws.com" = "allow"
+"ssmmessages.eu-central-1.amazonaws.com" = "allow"
+"monitoring.eu-central-1.amazonaws.com" = "allow"
 
 # Terraform
 "registry.terraform.io" = "allow"
