@@ -232,6 +232,7 @@ dangerously_allow_all_unix_sockets = true
 "ssm.eu-central-1.amazonaws.com" = "allow"
 "ssmmessages.eu-central-1.amazonaws.com" = "allow"
 "monitoring.eu-central-1.amazonaws.com" = "allow"
+"api.pricing.us-east-1.amazonaws.com" = "allow"
 
 # Terraform
 "registry.terraform.io" = "allow"
