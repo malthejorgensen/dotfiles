@@ -25,7 +25,8 @@ default_permissions = "workspace-network"  # Custom: Same as `:workspace` but wi
 
 # Sane approval policy
 approval_policy = "on-request" # Other options: "untrusted", "never"
-approvals_reviewer = "auto_review" # DANGER: LLM auto-review of commands requested to run outside the sandbox. Use `"user"` to approve yourself, rather than relying on a mini-LLM approver.
+# approvals_reviewer = "auto_review" # DANGER: LLM auto-review of commands requested to run outside the sandbox. Use `"user"` to approve yourself, rather than relying on a mini-LLM approver.
+approvals_reviewer = "user"
 
 # Allow the model to request web searches
 web_search = "cached"
