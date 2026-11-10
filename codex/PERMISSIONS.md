@@ -1,9 +1,9 @@
-workspace-write vs. malthe-sandbox
+workspace-write vs. malthe-restnet
 ----------------------------------
 
 The standard mode in Codex is called workspace-write:
 
- Access                                Standard workspace-write             Your malthe-sandbox
+ Access                                Standard workspace-write             Your malthe-restnet
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━  ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
  Reads outside the project             Broadly allowed, subject to OS       Denied except explicitly allowed
                                        permissions                          directories
@@ -26,3 +26,4 @@ Its default read access is unrestricted; its main filesystem restriction concern
 Read-access defaults (https://learn.chatgpt.com/docs/app-server#sandbox-read-access-readonlyaccess), sandbox
 protections and networking (https://learn.chatgpt.com/docs/agent-approvals-security).
 
+`malthe-fullnet` extends `malthe-restnet`, keeping the same filesystem rules and local networking settings while allowing all network domains with `"*" = "allow"`. Both profiles inherit the existing local/private-network and Unix socket access settings.

@@ -18,7 +18,8 @@ service_tier = "default"
 # MODE A (new, permission profiles)
 default_permissions = "workspace-network"  # Custom: Same as `:workspace` but with unrestricted network access
 # default_permissions = ":workspace"       # Built-in profile without network access
-# default_permissions = "malthe-sandbox"   # Custom: Access to cache and config dirs, but narrow network access
+# default_permissions = "malthe-restnet"   # Custom: Access to cache and config dirs, with restricted network access
+# default_permissions = "malthe-fullnet"   # Custom: Same filesystem access, with unrestricted network access
 # MODE B (old, deprecated `sandbox-mode`)
 # sandbox_mode = "workspace-write" # Default to writeable sandbox inside repo
 
@@ -85,14 +86,15 @@ allow_local_binding = true
 "127.0.0.1" = "allow"
 "::1" = "allow"
 
-# Permission profile "malthe-sandbox"
+# Permission profile "malthe-restnet"
 # - tries to make development with `uv`, `npm`, Postgres and Redis as easy as possible
-[permissions.malthe-sandbox]
+[permissions.malthe-restnet]
+description = "Development filesystem access with a restricted network allowlist."
 # By extending the :workspace profile, you get Codex's safeguards to ensure
 # subfolders such as .codex/ and .git/ within a workspace root are read-only
 # while the rest of the folder is writable.
 extends = "worktree-git"
-[permissions.malthe-sandbox.filesystem]
+[permissions.malthe-restnet.filesystem]
 # By default, deny read access to all files on disk.
 ":root" = "deny"
 
@@ -159,7 +161,7 @@ extends = "worktree-git"
 # Github's `gh` CLI tool
 "~/.config/gh/config.yml" = "read"
 
-[permissions.malthe-sandbox.filesystem.":workspace_roots"]
+[permissions.malthe-restnet.filesystem.":workspace_roots"]
 # Generally allow writing inside the project
 "." = "write"
 # Disallow reading env-files
@@ -188,13 +190,13 @@ extends = "worktree-git"
 "~/Library/Preferences/.wrangler/config/default.toml" = "read"
 "~/Library/Preferences/.wrangler/logs" = "write"
 
-[permissions.malthe-sandbox.network]
+[permissions.malthe-restnet.network]
 enabled = true
 allow_local_binding = true
 # Required for `npm test`/Node.js IPC
 dangerously_allow_all_unix_sockets = true
 
-[permissions.malthe-sandbox.network.domains]
+[permissions.malthe-restnet.network.domains]
 # Localhost loopback -- dev servers and Postgres over TCP.
 "localhost" = "allow"
 "127.0.0.1" = "allow"
@@ -244,8 +246,17 @@ dangerously_allow_all_unix_sockets = true
 # Sentry MCP
 "mcp.sentry.dev" = "allow"
 
+# Permission profile "malthe-fullnet"
+# - inherits the filesystem rules and local networking settings from malthe-restnet
+[permissions.malthe-fullnet]
+description = "Development filesystem access with unrestricted network access."
+extends = "malthe-restnet"
+
+[permissions.malthe-fullnet.network.domains]
+"*" = "allow"
+
 [permissions.xcode]
-extends = "malthe-sandbox"
+extends = "malthe-restnet"
 
 [permissions.xcode.filesystem]
 # Xcode and builds
