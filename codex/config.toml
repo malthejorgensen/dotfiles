@@ -285,6 +285,11 @@ extends = "malthe-restnet"
 "~/Library/Caches/org.swift.swiftpm/package-collection.db" = "write"
 "/private/var/folders/" = "write"
 
+[permissions.infra-terraform.filesystem]
+# Work-related infra repo with custom .codex/config.toml
+"~/dotfiles/git/gitconfig" = "read"
+"~/dotfiles/git/gitignore_global" = "read"
+
 [mcp_servers.railway]
 command = "railway"
 args = ["mcp"]
