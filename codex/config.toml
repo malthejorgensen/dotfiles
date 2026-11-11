@@ -291,6 +291,12 @@ extends = "malthe-restnet"
 "/System/Library/Sandbox/Profiles" = "read"
 "/usr/share/sandbox" = "read"
 
+# Building icons via SystemAppearance
+"/System/Library/CoreServices/SystemAppearance.bundle" = "read"
+"/System/Library/PrivateFrameworks/CoreUI.framework" = "read"
+"/Library/Developer/CoreSimulator/Profiles" = "read"
+"/Library/Developer/DeviceKit" = "read"
+
 [permissions.infra-terraform.filesystem]
 # Work-related infra repo with custom .codex/config.toml
 "~/dotfiles/git/gitconfig" = "read"
