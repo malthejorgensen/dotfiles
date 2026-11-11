@@ -185,6 +185,7 @@ extends = "worktree-git"
 # AWS CLI
 "~/.aws/config" = "read"
 "~/.aws/sso/" = "read"
+"~/.aws/sso/cache/" = "write"
 "~/.aws/cli/cache/" = "write"
 
 # Google Cloud CLI (`gcloud`)
