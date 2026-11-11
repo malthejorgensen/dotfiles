@@ -161,6 +161,7 @@ extends = "worktree-git"
 
 # Github's `gh` CLI tool
 "~/.config/gh/config.yml" = "read"
+"~/.config/gh/hosts.yml" = "read"
 
 [permissions.malthe-restnet.filesystem.":workspace_roots"]
 # Generally allow writing inside the project
