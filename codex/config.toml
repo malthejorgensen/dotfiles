@@ -287,6 +287,10 @@ extends = "malthe-restnet"
 "~/Library/Caches/com.apple.dt.xcodebuild" = "write"
 "/private/var/folders/" = "write"
 
+# System sandbox profiles used by SwiftPM's sandbox-exec.
+"/System/Library/Sandbox/Profiles" = "read"
+"/usr/share/sandbox" = "read"
+
 [permissions.infra-terraform.filesystem]
 # Work-related infra repo with custom .codex/config.toml
 "~/dotfiles/git/gitconfig" = "read"
