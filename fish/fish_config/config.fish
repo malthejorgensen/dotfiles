@@ -524,6 +524,13 @@ function tig
   end
 end
 
+function fdd
+  # Shorthand: fd -Ig '*.app'
+  # Longhand: fd --no-ignore --glob $argv
+  # We don't want glob by default
+  fd --no-ignore $argv
+end
+
 function grrep
   grep --color=always -r $argv . | less -R
 end
