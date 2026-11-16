@@ -115,7 +115,11 @@ extends = "worktree-git"
 "/System/Library/OpenSSL" = "read"
 "/Library/Developer/CommandLineTools" = "read"
 "~/.local/bin" = "read"
+
+# mise
 "~/.local/share/mise" = "read"
+"~/.local/state/mise/tracked-configs" = "write"
+"~/Library/Caches/mise" = "write"
 
 # Terraform
 "~/.terraform.d" = "read"
@@ -172,10 +176,12 @@ extends = "worktree-git"
 #   `*/.env` would make it so that directories in the root of the repo can not be renamed or deleted by Codex.
 ".env" = "deny"
 ".env.*" = "deny"
+
 # Disallow Malthe's custom .prompts and .plans directories
 # (avoids confusion)
 ".prompts" = "deny"
 ".plans" = "deny"
+
 # git: Allow commits and rebases
 ".git" = "write"
 # git: Keep the config and hooks as-is (maybe we should open these up to "write" at some point)
@@ -301,7 +307,9 @@ extends = "malthe-restnet"
 [permissions.infra-terraform.filesystem]
 # Work-related infra repo with custom .codex/config.toml
 "~/dotfiles/git/gitconfig" = "read"
+"~/dotfiles/git/gitattributes" = "read"
 "~/dotfiles/git/gitignore_global" = "read"
+"~/dotfiles/git/hooks" = "read"
 
 [mcp_servers.railway]
 command = "railway"
