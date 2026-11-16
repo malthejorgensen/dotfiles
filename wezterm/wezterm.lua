@@ -16,6 +16,11 @@ else
   config.color_scheme = 'Selenized Light (Gogh)'
 end
 
+-- Soften the vivid green used by fd for Python filenames (palette index 48).
+config.colors = {
+  indexed = { [48] = '#5faf87' },
+}
+
 -- Keep closing delimiters around a URL out of the clickable link. WezTerm's
 -- default bare-URL rule permits `)` as the final character, which makes links
 -- in Markdown and prose such as `[label](https://example.com)` open the wrong
