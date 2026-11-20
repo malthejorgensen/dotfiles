@@ -255,6 +255,7 @@ dangerously_allow_all_unix_sockets = true
 # Terraform
 "registry.terraform.io" = "allow"
 "releases.hashicorp.com" = "allow"
+"checkpoint-api.hashicorp.com" = "allow"
 
 # Cloudflare
 "api.cloudflare.com" = "allow"
